@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import './globals.css';
+import './globals.scss';
 import AuthContext from '@/context/AuthContext';
-import { ReactNode } from 'react';
 import { ToasterContext } from '@/context/ToasterContext';
+import localFont from 'next/font/local';
+import { Jua } from 'next/font/google';
+const jua = Jua({
+  weight: ['400'],
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: 'Amuna',
@@ -13,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
-      <body>
+      <body className={jua.className}>
         <AuthContext>
           <ToasterContext />
           {children}
