@@ -93,7 +93,10 @@ const AuthForm = () => {
 
   return (
     <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
-      <div className='px-4 py-8 bg-white shadow-lg sm:rounded-lg sm:px-10'>
+      <div className='px-4 py-4 bg-white shadow-lg sm:rounded-lg sm:px-10'>
+        <div className='text-2xl text-center w-full font-semibold'>
+          {variant === 'REGISTER' ? '회원가입' : '로그인'}
+        </div>
         <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>
           {variant === 'REGISTER' && (
             <Input
