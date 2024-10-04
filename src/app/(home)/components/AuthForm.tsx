@@ -11,6 +11,7 @@ import Button from '@/components/Button';
 import AuthSocialButton from './AuthSocialButton';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
 import { AuthFormValues } from '@/types/types';
+import Select from '@/components/inputs/Select';
 
 type Variant = 'LOGIN' | 'REGISTER';
 type Gender = 'MAN' | 'WOMEN' | 'OTHER';
@@ -94,6 +95,12 @@ const AuthForm = () => {
       .finally(() => setIsLoading(false));
   };
 
+  const selectItems = [
+    { label: '남성', value: 'MAN' },
+    { label: '여성', value: 'WOMEN' },
+    { label: '기타', value: 'OTHER' },
+  ];
+
   return (
     <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
       <div className='px-4 py-4 bg-white shadow-lg sm:rounded-lg sm:px-10'>
@@ -129,6 +136,16 @@ const AuthForm = () => {
             label='비밀번호'
             type='password'
           />
+          {variant === 'REGISTER' && (
+            <Select
+              label='성별'
+              id='gender'
+              selectItems={selectItems}
+              register={register}
+              errors={errors}
+              required
+            />
+          )}
           <div>
             <Button disbaled={isLoading} fullWidth type='submit'>
               {variant === 'LOGIN' ? '로그인' : '회원가입'}
