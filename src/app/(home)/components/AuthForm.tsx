@@ -10,8 +10,10 @@ import Input from '@/components/inputs/Input';
 import Button from '@/components/Button';
 import AuthSocialButton from './AuthSocialButton';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
+import { AuthFormValues } from '@/types/types';
 
 type Variant = 'LOGIN' | 'REGISTER';
+type Gender = 'MAN' | 'WOMEN' | 'OTHER';
 
 const AuthForm = () => {
   const session = useSession();
@@ -36,15 +38,16 @@ const AuthForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FieldValues>({
+  } = useForm<AuthFormValues>({
     defaultValues: {
       name: '',
       email: '',
       password: '',
+      gender: 'other',
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = data => {
+  const onSubmit: SubmitHandler<AuthFormValues> = data => {
     setIsLoading(true);
     if (variant === 'REGISTER') {
       axios
