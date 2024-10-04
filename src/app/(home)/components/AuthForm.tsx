@@ -56,7 +56,7 @@ const AuthForm = () => {
         .then(() => signIn('credentials', { ...data, redirect: false }))
         .then(callback => {
           if (callback?.error) {
-            toast.error('인증에 실패했습니다.');
+            toast.error('Invalid credentials!');
           }
           if (callback?.ok) {
             router.push('/conversations');
