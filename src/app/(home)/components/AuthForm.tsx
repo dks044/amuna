@@ -130,7 +130,7 @@ const AuthForm = () => {
             type='password'
           />
           <div>
-            <Button disabled={isLoading} fullWidth type='submit'>
+            <Button disbaled={isLoading} fullWidth type='submit'>
               {variant === 'LOGIN' ? '로그인' : '회원가입'}
             </Button>
           </div>
