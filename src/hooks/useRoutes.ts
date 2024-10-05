@@ -1,3 +1,4 @@
+'use client';
 import { signOut } from 'next-auth/react';
 import { usePathname } from 'next/dist/client/components/navigation';
 import { HiChat, HiUsers } from 'react-icons/hi';
