@@ -62,7 +62,10 @@ const AuthForm = () => {
             router.push('/conversations');
           }
         })
-        .catch(() => toast.error('에러가 발생했습니다.'))
+        .catch(() => {
+          console.log(errors);
+          toast.error('에러가 발생했습니다.');
+        })
         .finally(() => setIsLoading(false));
     }
 
@@ -140,6 +143,7 @@ const AuthForm = () => {
             <Select
               label='성별'
               id='gender'
+              disabled={isLoading}
               selectItems={selectItems}
               register={register}
               errors={errors}
