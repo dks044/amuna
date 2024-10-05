@@ -76,7 +76,7 @@ const DeskTopSideBar = ({ currentUser }: DeskTopSideBarProps) => {
             `}
           onClick={() => setIsOpen(true)}
         >
-          <Avata />
+          <Avata user={currentUser} />
         </div>
       </nav>
     </div>
