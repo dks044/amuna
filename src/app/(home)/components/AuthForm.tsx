@@ -63,9 +63,12 @@ const AuthForm = () => {
             router.push('/conversations');
           }
         })
-        .catch(() => {
-          console.log(errors);
-          toast.error('에러가 발생했습니다.');
+        .catch(error => {
+          if (error.response?.status === 400) {
+            toast.error('이미 사용 중인 이메일입니다.');
+          } else {
+            toast.error('에러가 발생했습니다.');
+          }
         })
         .finally(() => setIsLoading(false));
     }
