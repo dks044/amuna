@@ -1,7 +1,12 @@
+import Sidebar from '@/components/sidebar/Sidebar';
 import React from 'react';
 
 const ConversationsLayout = ({ children }: { children: React.ReactNode }) => {
-  return <div>{children}</div>;
+  return (
+    <Sidebar>
+      <div className='h-full'>{children}</div>
+    </Sidebar>
+  );
 };
 
 export default ConversationsLayout;
