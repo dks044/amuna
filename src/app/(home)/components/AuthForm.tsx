@@ -12,6 +12,7 @@ import AuthSocialButton from './AuthSocialButton';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
 import { AuthFormValues } from '@/types/types';
 import Select from '@/components/inputs/Select';
+import LoadingModal from '@/components/modals/LoadingModal';
 
 type Variant = 'LOGIN' | 'REGISTER';
 type Gender = 'MAN' | 'WOMEN' | 'OTHER';
@@ -178,6 +179,7 @@ const AuthForm = () => {
           </div>
         </div>
       </div>
+      <LoadingModal show={isLoading} />
     </div>
   );
 };

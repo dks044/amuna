@@ -1,8 +1,8 @@
 import LoadingModal from '@/components/modals/LoadingModal';
 import React from 'react';
 
-const Loading = () => {
+const testPage = () => {
   return <LoadingModal show={true} />;
 };
 
-export default Loading;
+export default testPage;
