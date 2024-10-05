@@ -15,10 +15,10 @@ const useRoutes = () => {
       active: pathName === '/conversations' || isOpen,
     },
     {
-      label: 'Users',
-      href: '/users',
+      label: 'Chatrooms',
+      href: '/chatrooms',
       icon: HiUsers,
-      active: pathName === '/users',
+      active: pathName === '/chatrooms',
     },
     {
       label: 'Logout',

@@ -1,4 +1,3 @@
-import EmptyState from '@/components/EmptyState';
 import React from 'react';
 
 const UserPage = () => {
@@ -9,10 +8,10 @@ const UserPage = () => {
       h-full
       lg:block
       lg:pl-80
-          
+
       `}
     >
-      <EmptyState />
+      12
     </div>
   );
 };
