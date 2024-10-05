@@ -23,6 +23,25 @@ $grid-background: repeating-linear-gradient(
     rgba(0, 0, 0, 0.1) 20px
   );
 
+$grid-background-dark: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 19px,
+    rgba(0, 0, 0, 0.3) 19px,
+    rgba(0, 0, 0, 0.3) 20px
+  ),
+  repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 19px,
+    rgba(0, 0, 0, 0.3) 19px,
+    rgba(0, 0, 0, 0.3) 20px
+  );
+
 .grid-background {
   background-image: $grid-background;
+}
+
+.grid-background-dark {
+  background-image: $grid-background-dark;
 }
