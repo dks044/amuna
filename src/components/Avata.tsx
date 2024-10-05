@@ -35,7 +35,7 @@ const Avata = ({ user }: AvataProps) => {
           ring-white
           top-0
           right-0
-          h-2
+          h-2 
           w-2
           md-h-3
           md-w-3
