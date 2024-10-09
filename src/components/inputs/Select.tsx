@@ -59,9 +59,7 @@ const Select: React.FC<SelectProps> = ({
           disabled && 'opacity-50 cursor-default',
         )}
       >
-        <option value='' disabled>
-          선택하세요
-        </option>
+        <option value=''>선택하세요</option>
         {selectItems.map(item => (
           <option key={item.value} value={item.value}>
             {item.label}

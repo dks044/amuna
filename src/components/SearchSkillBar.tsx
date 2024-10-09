@@ -34,25 +34,22 @@ interface SearchSkillBarProps {
 const SearchSkillBar = ({ label, onClickSkillItem }: SearchSkillBarProps) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredStacks, setFilteredStacks] = useState<TechStack[]>([]);
+  const [filteredStacks, setFilteredStacks] = useState<TechStack[]>(techStacks);
+
+  const handleClickSkillItem = (skill: TechStack) => {
+    onClickSkillItem(skill);
+    setSearchTerm('');
+  };
 
   useEffect(() => {
-    setFilteredStacks(
-      techStacks.filter(stack => stack.toLowerCase().includes(searchTerm.toLowerCase())),
-    );
-  }, [searchTerm]);
-
-  const handleClickSkillItem = useCallback(
-    (skill: TechStack) => {
-      onClickSkillItem(skill);
+    if (searchTerm === '' || searchTerm.length === 0) {
       setFilteredStacks([]);
-    },
-    [onClickSkillItem],
-  );
-
-  const handleBlur = () => {
-    setFilteredStacks([]);
-  };
+    } else {
+      setFilteredStacks(
+        techStacks.filter(stack => stack.toLowerCase().includes(searchTerm.toLowerCase())),
+      );
+    }
+  }, [searchTerm]);
 
   return (
     <div
@@ -72,15 +69,14 @@ const SearchSkillBar = ({ label, onClickSkillItem }: SearchSkillBarProps) => {
           placeholder='기술 스택 검색'
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          onBlur={handleBlur}
           className='border-none outline-none flex-grow h-full placeholder:text-gray-400 focus:ring-0'
         />
       </div>
       {filteredStacks.length > 0 && (
         <ul className='absolute z-10 w-full bg-white shadow-lg rounded-lg mt-1 max-h-40 overflow-y-auto'>
-          {filteredStacks.map((stack: TechStack, index) => (
+          {filteredStacks.map((stack: TechStack) => (
             <li
-              key={index}
+              key={stack}
               className='flex py-2 px-4 hover:bg-gray-100 cursor-pointer items-center'
               onClick={() => handleClickSkillItem(stack)}
             >

@@ -14,6 +14,9 @@ import { AuthFormValues, TechStack } from '@/types/types';
 import Select from '@/components/inputs/Select';
 import LoadingModal from '@/components/modals/LoadingModal';
 import SearchSkillBar from '@/components/SearchSkillBar';
+import SkillIcon from '@/components/SkillIcon';
+import { TiDelete } from 'react-icons/ti';
+import clsx from 'clsx';
 
 type Variant = 'LOGIN' | 'REGISTER';
 type Gender = 'MAN' | 'WOMEN' | 'OTHER';
@@ -23,7 +26,7 @@ const AuthForm = () => {
   const router = useRouter();
   const [variant, setVariant] = useState<Variant>('LOGIN');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [skills, setSkills] = useState<Set<TechStack>>(new Set());
+  const [skills, setSkills] = useState<TechStack[]>([]);
 
   useEffect(() => {
     if (session?.status === 'authenticated') {
@@ -54,10 +57,20 @@ const AuthForm = () => {
 
   const onSubmit: SubmitHandler<AuthFormValues> = data => {
     setIsLoading(true);
+    const { name, email, password, gender } = data;
+
+    const userSkills = [...skills];
+
     if (variant === 'REGISTER') {
       axios
-        .post('/api/register', data)
-        .then(() => signIn('credentials', { ...data, redirect: false }))
+        .post('/api/register', {
+          name,
+          email,
+          password,
+          gender,
+          skills: userSkills,
+        })
+        .then(() => signIn('credentials', { email, password, redirect: false }))
         .then(callback => {
           if (callback?.error) {
             toast.error('Invalid credentials!');
@@ -113,11 +126,23 @@ const AuthForm = () => {
 
   const onClickToSetSkills = (skill: TechStack) => {
     setSkills(prevSkills => {
-      const newSkills = new Set(prevSkills);
-      newSkills.add(skill);
-      return newSkills;
+      if (!prevSkills.includes(skill)) {
+        return [...prevSkills, skill];
+      }
+      return prevSkills;
     });
   };
+
+  const onClickToRemoveSkills = (skill: TechStack) => {
+    setSkills(prevSkills => {
+      const updateSkills = prevSkills.filter(prevSkill => prevSkill !== skill);
+      return updateSkills;
+    });
+  };
+
+  useEffect(() => {
+    console.log('Current skills:', skills);
+  }, [skills]);
 
   return (
     <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
@@ -166,6 +191,24 @@ const AuthForm = () => {
                 required
               />
               <SearchSkillBar onClickSkillItem={onClickToSetSkills} label='관심사 태그' />
+              <div className='flex flex-wrap space-x-3'>
+                {Array.from(skills).map((skill, idx) => (
+                  <div className='flex items-center' key={skill}>
+                    <SkillIcon skill={skill} />
+                    <span onClick={() => onClickToRemoveSkills(skill)}>
+                      <TiDelete
+                        className={clsx(
+                          `
+                          text-gray-500
+                          hover:text-gray-300
+                          cursor-pointer
+                        `,
+                        )}
+                      />
+                    </span>
+                  </div>
+                ))}
+              </div>
             </React.Fragment>
           )}
           <div>

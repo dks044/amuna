@@ -3,6 +3,7 @@ export type AuthFormValues = {
   email: string;
   password: string;
   gender?: 'male' | 'female' | 'other';
+  tags?: TechStack[];
 };
 
 export type TechStack =
