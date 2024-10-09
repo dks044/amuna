@@ -1,9 +1,32 @@
 'use client';
 import SearchBar from '@/components/SearchBar';
+import SearchSkillBar from '@/components/SearchSkillBar';
+import SkillIcon from '@/components/SkillIcon';
+import { TechStack } from '@/types/types';
+import clsx from 'clsx';
 import React, { useState } from 'react';
+import { TiDelete } from 'react-icons/ti';
 
 const DesktopUI = () => {
   const [keyword, setKeyword] = useState<string>('');
+  const [skills, setSkills] = useState<TechStack[]>([]);
+
+  const onClickToSetSkills = (skill: TechStack) => {
+    setSkills(prevSkills => {
+      if (!prevSkills.includes(skill)) {
+        return [...prevSkills, skill];
+      }
+      return prevSkills;
+    });
+  };
+
+  const onClickToRemoveSkills = (skill: TechStack) => {
+    setSkills(prevSkills => {
+      const updateSkills = prevSkills.filter(prevSkill => prevSkill !== skill);
+      return updateSkills;
+    });
+  };
+
   return (
     <div
       className={`
@@ -28,6 +51,29 @@ const DesktopUI = () => {
       <div className='w-full flex justify-center items-center'>
         <div className='w-full max-w-md mt-4'>
           <SearchBar onChange={setKeyword} value={keyword} />
+        </div>
+      </div>
+      <div className='w-full flex justify-center items-center'>
+        <div className='flex w-full max-w-md mt-4 flex-col'>
+          <SearchSkillBar shadow={true} onClickSkillItem={onClickToSetSkills} />
+          <div className='flex flex-wrap space-x-3'>
+            {Array.from(skills).map(skill => (
+              <div className='flex items-center mt-2' key={skill}>
+                <SkillIcon skill={skill} />
+                <span onClick={() => onClickToRemoveSkills(skill)}>
+                  <TiDelete
+                    className={clsx(
+                      `
+                          text-gray-500
+                          hover:text-gray-300
+                          cursor-pointer
+                        `,
+                    )}
+                  />
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

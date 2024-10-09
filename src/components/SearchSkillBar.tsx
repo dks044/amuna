@@ -29,9 +29,10 @@ const techStacks: TechStack[] = [
 interface SearchSkillBarProps {
   label?: string;
   onClickSkillItem: (skill: TechStack) => void;
+  shadow?: boolean;
 }
 
-const SearchSkillBar = ({ label, onClickSkillItem }: SearchSkillBarProps) => {
+const SearchSkillBar = ({ label, onClickSkillItem, shadow }: SearchSkillBarProps) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredStacks, setFilteredStacks] = useState<TechStack[]>(techStacks);
@@ -53,20 +54,20 @@ const SearchSkillBar = ({ label, onClickSkillItem }: SearchSkillBarProps) => {
 
   return (
     <div
-      className='relative w-full max-w-md'
+      className={clsx(`relative w-full max-w-md rounded-lg`, shadow && 'shadow-lg')}
       onFocus={() => setIsFocus(true)}
       onBlur={() => setIsFocus(false)}
     >
       {label && (
         <label className='block text-sm font-medium leading-6 text-gray-900 '>{label}</label>
       )}
-      <div className='flex items-center bg-white rounded-lg px-3 py-2'>
+      <div className='flex items-center bg-white rounded-lg px-3'>
         <CiSearch
           className={clsx('mr-2', isFocus ? 'text-lime-500' : 'text-gray-400', 'h-5 w-5')}
         />
         <input
           type='text'
-          placeholder='기술 스택 검색'
+          placeholder='관심사 검색'
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
           className='border-none outline-none flex-grow h-full placeholder:text-gray-400 focus:ring-0'

@@ -62,6 +62,11 @@ const AuthForm = () => {
     const userSkills = [...skills];
 
     if (variant === 'REGISTER') {
+      if (!gender) {
+        toast.error('성별을 선택해주세요.');
+        setIsLoading(false);
+        return;
+      }
       axios
         .post('/api/register', {
           name,
@@ -76,6 +81,7 @@ const AuthForm = () => {
             toast.error('Invalid credentials!');
           }
           if (callback?.ok) {
+            toast.success('회원가입 성공! 잠시만 기다려주세요!');
             router.push('/conversations');
           }
         })
@@ -192,7 +198,7 @@ const AuthForm = () => {
               />
               <SearchSkillBar onClickSkillItem={onClickToSetSkills} label='관심사 태그' />
               <div className='flex flex-wrap space-x-3'>
-                {Array.from(skills).map((skill, idx) => (
+                {Array.from(skills).map(skill => (
                   <div className='flex items-center' key={skill}>
                     <SkillIcon skill={skill} />
                     <span onClick={() => onClickToRemoveSkills(skill)}>

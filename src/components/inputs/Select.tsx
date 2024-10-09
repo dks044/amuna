@@ -34,6 +34,7 @@ const Select: React.FC<SelectProps> = ({
       <select
         id={id}
         {...register(id, { required })}
+        defaultValue=''
         disabled={disabled}
         className={clsx(
           `
@@ -59,7 +60,9 @@ const Select: React.FC<SelectProps> = ({
           disabled && 'opacity-50 cursor-default',
         )}
       >
-        <option value=''>선택하세요</option>
+        <option value='' disabled>
+          선택하세요
+        </option>
         {selectItems.map(item => (
           <option key={item.value} value={item.value}>
             {item.label}
