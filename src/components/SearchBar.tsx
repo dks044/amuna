@@ -14,7 +14,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
   return (
     <div
       className={clsx(
-        `flex items-center w-full h-full shadow-lg rounded-lg px-3`,
+        `border-0 ring-1 ring-inset ring-gray-300 flex items-center w-full h-full shadow-lg rounded-lg px-3 py-1`,
         isFocus ? 'bg-gray-100' : 'bg-white',
       )}
       onFocus={() => setIsFocus(true)}

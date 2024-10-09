@@ -54,14 +54,19 @@ const SearchSkillBar = ({ label, onClickSkillItem, shadow }: SearchSkillBarProps
 
   return (
     <div
-      className={clsx(`relative w-full max-w-md rounded-lg`, shadow && 'shadow-lg')}
+      className={clsx(` relative w-full max-w-md rounded-lg`, shadow && 'shadow-lg')}
       onFocus={() => setIsFocus(true)}
       onBlur={() => setIsFocus(false)}
     >
       {label && (
         <label className='block text-sm font-medium leading-6 text-gray-900 '>{label}</label>
       )}
-      <div className='flex items-center bg-white rounded-lg px-3'>
+      <div
+        className={clsx(
+          `border-0  ring-1 ring-inset ring-gray-300 focus:ring-orange-600 flex items-center rounded-lg px-3 py-1`,
+          isFocus ? 'bg-gray-100' : 'bg-white',
+        )}
+      >
         <CiSearch
           className={clsx('mr-2', isFocus ? 'text-lime-500' : 'text-gray-400', 'h-5 w-5')}
         />
@@ -70,7 +75,10 @@ const SearchSkillBar = ({ label, onClickSkillItem, shadow }: SearchSkillBarProps
           placeholder='관심사 검색'
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className='border-none outline-none flex-grow h-full placeholder:text-gray-400 focus:ring-0'
+          className={clsx(
+            'border-none outline-none flex-grow  placeholder:text-gray-400 focus:ring-0',
+            isFocus ? 'bg-gray-100' : 'bg-white',
+          )}
         />
       </div>
       {filteredStacks.length > 0 && (

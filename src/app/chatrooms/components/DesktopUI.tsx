@@ -42,7 +42,7 @@ const DesktopUI = () => {
     >
       <div className='flex flex-col w-full justify-center items-center'>
         <div
-          className='mt-3 text-3xl font-bold tracking-tight text-center shadow-lg py-4 px-4 w-max bg-white sm:rounded-lg text-gray-900
+          className='border-0 ring-1 ring-inset ring-gray-300 mt-3 text-3xl font-bold tracking-tight text-center shadow-lg py-4 px-4 w-max bg-white sm:rounded-lg text-gray-900
           dd'
         >
           <div>관심사 채팅방 찾기</div>
