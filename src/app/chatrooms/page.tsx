@@ -1,19 +1,14 @@
 import React from 'react';
+import DesktopUI from './components/DesktopUI';
+import MobileUI from './components/MobileUI';
 
-const UserPage = () => {
+const ChatroomsPage = () => {
   return (
-    <div
-      className={`
-      hidden
-      h-full
-      lg:block
-      lg:pl-80
-
-      `}
-    >
-      12
+    <div className='h-full'>
+      <DesktopUI />
+      <MobileUI />
     </div>
   );
 };
 
-export default UserPage;
+export default ChatroomsPage;
