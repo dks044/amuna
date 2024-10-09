@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
 import clsx from 'clsx';
 import { TechStack } from '@/types/types';
+import SkillIcon from './SkillIcon';
 
 const techStacks: TechStack[] = [
   'Java',
@@ -80,10 +81,10 @@ const SearchSkillBar = ({ label, onClickSkillItem }: SearchSkillBarProps) => {
           {filteredStacks.map((stack: TechStack, index) => (
             <li
               key={index}
-              className='py-2 px-4 hover:bg-gray-100 cursor-pointer'
+              className='flex py-2 px-4 hover:bg-gray-100 cursor-pointer items-center'
               onClick={() => handleClickSkillItem(stack)}
             >
-              {stack}
+              <SkillIcon skill={stack} />
             </li>
           ))}
         </ul>

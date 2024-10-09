@@ -1,7 +1,7 @@
-"use client";
-import IconButton from "@/components/IconButton";
-import React from "react";
-import { MdOutlineGroupAdd } from "react-icons/md";
+'use client';
+import IconButton from '@/components/IconButton';
+import React from 'react';
+import { MdOutlineGroupAdd } from 'react-icons/md';
 
 const DeskypSideMenu = () => {
   return (
@@ -24,15 +24,14 @@ const DeskypSideMenu = () => {
       <div
         className={`
         flex
-        justify-between
+        justify-center
         items-center
         w-full
         h-3
-        px-8
       `}
       >
-        <div className="text-3xl">AMUNA</div>
-        <div className="w-8 h-8 bg-transparent">
+        <div className='text-4xl leading-6'>AMUNA</div>
+        <div className='w-7 h-7 bg-transparent absolute right-3'>
           <IconButton icon={MdOutlineGroupAdd} />
         </div>
       </div>
