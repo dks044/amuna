@@ -3,7 +3,7 @@ import IconButton from '@/components/IconButton';
 import React from 'react';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 
-const DeskypSideMenu = () => {
+const DesktopSideMenu = () => {
   return (
     <div
       className={`
@@ -17,7 +17,7 @@ const DeskypSideMenu = () => {
       bg-white
       lg:w-80
       flex-col
-      pt-8
+      pt-6
       border-r-[1px]
     `}
     >
@@ -27,10 +27,9 @@ const DeskypSideMenu = () => {
         justify-center
         items-center
         w-full
-        h-3
       `}
       >
-        <div className='text-4xl leading-6'>AMUNA</div>
+        <div className='text-2xl font-bold text-neutral-800'>AMUNA</div>
         <div className='w-7 h-7 bg-transparent absolute right-3'>
           <IconButton icon={MdOutlineGroupAdd} />
         </div>
@@ -39,4 +38,4 @@ const DeskypSideMenu = () => {
   );
 };
 
-export default DeskypSideMenu;
+export default DesktopSideMenu;

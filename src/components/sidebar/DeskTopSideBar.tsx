@@ -1,4 +1,5 @@
 'use client';
+
 import useRoutes from '@/hooks/useRoutes';
 import { User } from '@prisma/client';
 import React, { useState } from 'react';
@@ -9,7 +10,7 @@ interface DeskTopSideBarProps {
   currentUser: User;
 }
 
-const DeskTopSideBar = ({ currentUser }: DeskTopSideBarProps) => {
+const DesktopSidebar: React.FC<DeskTopSideBarProps> = ({ currentUser }) => {
   const routes = useRoutes();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -84,4 +85,4 @@ const DeskTopSideBar = ({ currentUser }: DeskTopSideBarProps) => {
   );
 };
 
-export default DeskTopSideBar;
+export default DesktopSidebar;

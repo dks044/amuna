@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import React from 'react';
 import { IconType } from 'react-icons/lib';
@@ -18,7 +17,7 @@ const DeskTopItem = ({ label, href, icon: Icon, active, onClick }: DeskTopItemPr
       return onClick();
     }
   };
-
+  console.log('active=> ', active);
   return (
     <li onClick={handleClick}>
       <Link
@@ -38,7 +37,7 @@ const DeskTopItem = ({ label, href, icon: Icon, active, onClick }: DeskTopItemPr
           bg-white
           hover:bg-gray-100
         `,
-          active && 'bg-grey-200 text-black',
+          active && 'bg-gray-200 text-black',
         )}
       >
         <Icon
