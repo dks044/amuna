@@ -10,9 +10,10 @@ import Input from '@/components/inputs/Input';
 import Button from '@/components/Button';
 import AuthSocialButton from './AuthSocialButton';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
-import { AuthFormValues } from '@/types/types';
+import { AuthFormValues, TechStack } from '@/types/types';
 import Select from '@/components/inputs/Select';
 import LoadingModal from '@/components/modals/LoadingModal';
+import SearchSkillBar from '@/components/SearchSkillBar';
 
 type Variant = 'LOGIN' | 'REGISTER';
 type Gender = 'MAN' | 'WOMEN' | 'OTHER';
@@ -22,6 +23,8 @@ const AuthForm = () => {
   const router = useRouter();
   const [variant, setVariant] = useState<Variant>('LOGIN');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [skills, setSkills] = useState<Set<TechStack>>(new Set());
+
   useEffect(() => {
     if (session?.status === 'authenticated') {
       router.push('/conversations');
@@ -108,6 +111,14 @@ const AuthForm = () => {
     { label: '기타', value: 'OTHER' },
   ];
 
+  const onClickToSetSkills = (skill: TechStack) => {
+    setSkills(prevSkills => {
+      const newSkills = new Set(prevSkills);
+      newSkills.add(skill);
+      return newSkills;
+    });
+  };
+
   return (
     <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
       <div className='px-4 py-4 bg-white shadow-lg sm:rounded-lg sm:px-10'>
@@ -144,15 +155,18 @@ const AuthForm = () => {
             type='password'
           />
           {variant === 'REGISTER' && (
-            <Select
-              label='성별'
-              id='gender'
-              disabled={isLoading}
-              selectItems={selectItems}
-              register={register}
-              errors={errors}
-              required
-            />
+            <React.Fragment>
+              <Select
+                label='성별'
+                id='gender'
+                disabled={isLoading}
+                selectItems={selectItems}
+                register={register}
+                errors={errors}
+                required
+              />
+              <SearchSkillBar onClickSkillItem={onClickToSetSkills} label='관심사 태그' />
+            </React.Fragment>
           )}
           <div>
             <Button disbaled={isLoading} fullWidth type='submit'>

@@ -12,15 +12,18 @@ const IconButton = ({ icon: Icon, onClick }: IconButtonProps) => {
         flex
         justify-center
         items-center
-        rounded-xl
+        rounded-2xl
         w-full
         h-full        
         leading-6
         font-semibold
-      text-gray-500
+      text-gray-400
       hover:text-black
-      bg-gray-400
+      bg-gray-200
       hover:bg-gray-100
+        cursor-pointer
+        shadow-md
+        px-4
       `}
       onClick={onClick}
     >
