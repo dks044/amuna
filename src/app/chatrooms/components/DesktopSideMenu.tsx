@@ -1,9 +1,10 @@
 'use client';
+import getUsers from '@/app/actions/getUsers';
 import IconButton from '@/components/IconButton';
 import React from 'react';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 
-const DesktopSideMenu = () => {
+const DesktopSideMenu = async () => {
   return (
     <div
       className={`

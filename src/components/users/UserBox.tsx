@@ -1,12 +1,12 @@
 'use client';
 import { User } from '@prisma/client';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import LoadingModal from '../modals/LoadingModal';
 import clsx from 'clsx';
 import Avata from '../Avata';
+import { useRouter } from 'next/navigation';
 
 interface UserBoxProps {
   data: User;

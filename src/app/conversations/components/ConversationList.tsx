@@ -45,8 +45,9 @@ const ConversationList = ({ initialItems, users }: ConversationListProps) => {
           </div>
         </div>
       </div>
-      {/* {items.map} */}
-      <ConversationBox />
+      {items.map(item => (
+        <ConversationBox key={item.id} data={item} selected={conversationId === item.id} />
+      ))}
     </aside>
   );
 };
