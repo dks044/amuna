@@ -34,26 +34,21 @@ const ConfirmModal = ({ isOpen, onClose }: ConfirmModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className='sm:flex sm:items-start'>
-        <div
-          className={`
-            flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0
-            sm:h-10 sm:w-10   
-          `}
-        >
+        <div className='flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10'>
           <FiAlertTriangle className='w-6 h-6 text-red-600 ' />
         </div>
-      </div>
-      <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
-        <DialogTitle as='h3' className='text-base font-semibold leading-6 text-gray-900'>
-          채팅방 삭제
-        </DialogTitle>
-        <div className='mt-2'>
-          <p className='text-sm text-gray-500'>
-            이 대화를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.
-          </p>
+        <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
+          <DialogTitle as='h3' className='text-base font-semibold leading-6 text-gray-900'>
+            채팅방 삭제
+          </DialogTitle>
+          <div className='mt-2'>
+            <p className='text-sm text-gray-500'>
+              이 대화를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.
+            </p>
+          </div>
         </div>
       </div>
-      <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
+      <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse sm:w-full'>
         <Button disbaled={isLoading} danger onClick={onDelete}>
           삭제
         </Button>
