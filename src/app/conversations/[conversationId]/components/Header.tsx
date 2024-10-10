@@ -1,5 +1,5 @@
 'use client';
-import Avata from '@/components/Avata';
+import Avatar from '@/components/Avatar';
 import AvatarGroup from '@/components/AvataGroup';
 import useActiveList from '@/hooks/useActiveList';
 import useOtherUser from '@/hooks/useOtheruser';
@@ -56,7 +56,7 @@ const Header = ({ conversation }: HeaderProps) => {
           {conversation.isGroup ? (
             <AvatarGroup users={conversation.users} />
           ) : (
-            <Avata user={otherUser} />
+            <Avatar user={otherUser} />
           )}
           <div className='flex flex-col '>
             <div>{conversation.name || otherUser.name}</div>

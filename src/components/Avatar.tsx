@@ -6,7 +6,7 @@ interface AvataProps {
   user?: User;
 }
 
-const Avata = ({ user }: AvataProps) => {
+const Avatar = ({ user }: AvataProps) => {
   return (
     <div className='relative'>
       <div
@@ -45,4 +45,4 @@ const Avata = ({ user }: AvataProps) => {
   );
 };
 
-export default Avata;
+export default Avatar;

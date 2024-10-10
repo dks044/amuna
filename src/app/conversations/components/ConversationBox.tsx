@@ -1,4 +1,4 @@
-import Avata from '@/components/Avata';
+import Avatar from '@/components/Avatar';
 import AvataGroup from '@/components/AvataGroup';
 import useOtherUser from '@/hooks/useOtheruser';
 import { FullConversationType } from '@/types';
@@ -77,7 +77,7 @@ const ConversationBox = ({ data, selected }: ConversationBoxProps) => {
         selected ? 'bg-neutral-300' : 'bg-white',
       )}
     >
-      {data.isGroup ? <AvataGroup /> : <Avata />}
+      {data.isGroup ? <AvataGroup /> : <Avatar />}
       <div className='flex-1 min-w-0 '>
         <div className='focus:outline-none'>
           <div className='flex items-center justify-between mb-1'>

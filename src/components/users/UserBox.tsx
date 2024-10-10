@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import LoadingModal from '../modals/LoadingModal';
 import clsx from 'clsx';
-import Avata from '../Avata';
+import Avatar from '../Avatar';
 import { useRouter } from 'next/navigation';
 
 interface UserBoxProps {
@@ -50,7 +50,7 @@ const UserBox = ({ data }: UserBoxProps) => {
         `,
         )}
       >
-        <Avata />
+        <Avatar />
         <div className='min-w-0 flex-1'>
           <div className='focus:outline-none'>
             <div className='flex justify-between items-center mb-1'>

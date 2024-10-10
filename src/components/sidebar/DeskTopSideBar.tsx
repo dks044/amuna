@@ -4,7 +4,7 @@ import useRoutes from '@/hooks/useRoutes';
 import { User } from '@prisma/client';
 import React, { useState } from 'react';
 import DeskTopItem from './DeskTopItem';
-import Avata from '../Avata';
+import Avatar from '../Avatar';
 
 interface DeskTopSideBarProps {
   currentUser: User;
@@ -78,7 +78,7 @@ const DesktopSidebar: React.FC<DeskTopSideBarProps> = ({ currentUser }) => {
             `}
           onClick={() => setIsOpen(true)}
         >
-          <Avata user={currentUser} />
+          <Avatar user={currentUser} />
         </div>
       </nav>
     </div>
