@@ -1,3 +1,4 @@
+'use client';
 import Button from '@/components/Button';
 import Modal from '@/components/modals/Modal';
 import useConversation from '@/hooks/useConversation';
@@ -48,7 +49,7 @@ const ConfirmModal = ({ isOpen, onClose }: ConfirmModalProps) => {
           </div>
         </div>
       </div>
-      <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse sm:w-full'>
+      <div className='mt-5 sm:mt-4 sm:flex sm:w-full'>
         <Button disbaled={isLoading} danger onClick={onDelete}>
           삭제
         </Button>

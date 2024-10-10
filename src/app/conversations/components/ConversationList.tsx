@@ -44,10 +44,10 @@ const ConversationList = ({ initialItems, users }: ConversationListProps) => {
             <IconButton icon={MdOutlineGroupAdd} onClick={() => setIsModealOpen(true)} />
           </div>
         </div>
+        {items.map(item => (
+          <ConversationBox key={item.id} data={item} selected={conversationId === item.id} />
+        ))}
       </div>
-      {items.map(item => (
-        <ConversationBox key={item.id} data={item} selected={conversationId === item.id} />
-      ))}
     </aside>
   );
 };
