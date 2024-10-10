@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
+import { format } from 'date-fns';
 
 interface ConversationBoxProps {
   data: FullConversationType;
@@ -77,7 +78,9 @@ const ConversationBox = ({ data, selected }: ConversationBoxProps) => {
           <div className='flex items-center justify-between mb-1'>
             <p className='font-medium text-gray-900 text-md'>{data.name || otherUser.name}</p>
             {lastMessage?.cretedAt && (
-              <p className='text-xs font-light text-gray-400'>{lastMessage.cretedAt.toString()}</p>
+              <p className='text-xs font-light text-gray-400'>
+                {format(new Date(lastMessage.cretedAt), 'p')}
+              </p>
             )}
           </div>
           <p

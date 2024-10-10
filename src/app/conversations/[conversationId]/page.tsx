@@ -1,7 +1,7 @@
 import React from 'react';
 
-const page = () => {
-  return <div>page</div>;
+const ConversationId = () => {
+  return <div>ConversationId</div>;
 };
 
-export default page;
+export default ConversationId;
