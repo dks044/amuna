@@ -1,14 +1,15 @@
-import getCurrentUser from './getCurrentUser';
 import prisma from '@/libs/prismadb';
+import getCurrentUser from './getCurrentUser';
 
 const getConversations = async () => {
   const currentUser = await getCurrentUser();
+
   if (!currentUser?.id) {
     return [];
   }
 
   try {
-    //currentUser.id를 가지고(has)있는 채팅방목록
+    //current UserId가 가지고 있는 채팅방 목록
     const conversations = await prisma.conversation.findMany({
       orderBy: {
         lastMessageAt: 'desc',
@@ -28,8 +29,9 @@ const getConversations = async () => {
         },
       },
     });
+
     return conversations;
-  } catch (error) {
+  } catch (error: any) {
     return [];
   }
 };

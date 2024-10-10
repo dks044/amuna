@@ -25,7 +25,7 @@ const ConfirmModal = ({ isOpen, onClose }: ConfirmModalProps) => {
       .then(() => {
         onClose();
         router.push('/conversations');
-        router.refresh();
+        window.location.reload();
       })
       .catch(() => toast.error('에러가 발생했습니다.'))
       .finally(() => setIsLoading(false));
