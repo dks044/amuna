@@ -1,6 +1,7 @@
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
 
+//param에서 채팅방id 추출용
 const useConversation = () => {
   const params = useParams();
 
