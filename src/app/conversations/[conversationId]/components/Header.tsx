@@ -8,6 +8,7 @@ import Link from 'next/link';
 import React, { useMemo, useState } from 'react';
 import { HiChevronLeft } from 'react-icons/hi';
 import { HiEllipsisHorizontal } from 'react-icons/hi2';
+import ProfileDrawer from './ProfileDrawer';
 
 interface HeaderProps {
   conversation: Conversation & {
@@ -28,22 +29,39 @@ const Header = ({ conversation }: HeaderProps) => {
   }, [conversation, isActive]);
 
   return (
-    <div className='bg-white w-full flex border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 justify-between items-center shadow-sm'>
-      <div className='flex items-center gap-3'>
-        <Link
-          href={'/conversations'}
-          className='block text-lime-500 transition cursor-pointer lg:hidden hover:text-lime-600'
-        >
-          <HiChevronLeft size={32} />
-        </Link>
-        {conversation.isGroup ? (
-          <AvatarGroup users={conversation.users} />
-        ) : (
-          <Avata user={otherUser} />
-        )}
-        <div className='flex flex-col '>
-          <div>{conversation.name || otherUser.name}</div>
-          <div className='text-sm font-light text-neutral-500'>{statusText}</div>
+    <React.Fragment>
+      <ProfileDrawer data={conversation} isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <div
+        className='
+        bg-white 
+        w-full 
+        flex 
+        border-b-[1px] 
+        sm:px-4 
+        py-3 
+        px-4 
+        lg:px-6 
+        justify-between 
+        items-center 
+        shadow-sm
+        '
+      >
+        <div className='flex items-center gap-3'>
+          <Link
+            href='/conversations'
+            className='block text-lime-500 transition cursor-pointer lg:hidden hover:text-lime-600'
+          >
+            <HiChevronLeft size={32} />
+          </Link>
+          {conversation.isGroup ? (
+            <AvatarGroup users={conversation.users} />
+          ) : (
+            <Avata user={otherUser} />
+          )}
+          <div className='flex flex-col '>
+            <div>{conversation.name || otherUser.name}</div>
+            <div className='text-sm font-light text-neutral-500'>{statusText}</div>
+          </div>
         </div>
         <HiEllipsisHorizontal
           className='text-lime-500 transition cursor-pointer hover:text-lime-600'
@@ -51,7 +69,7 @@ const Header = ({ conversation }: HeaderProps) => {
           size={32}
         />
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
