@@ -1,7 +1,7 @@
 'use client';
 import useConversation from '@/hooks/useConversation';
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import MessageInput from './MessageInput';
 import { HiPaperAirplane } from 'react-icons/hi';
@@ -42,14 +42,14 @@ const Form = () => {
         flex items-center w-full gap-2 px-4 py-4 bg-white border-t lg:gap-4    
       `}
     >
+      <CldUploadButton
+        options={{ maxFiles: 1 }}
+        onUploadAddedAction={handleUpload}
+        uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET}
+      >
+        <HiPhoto size={30} className='text-lime-500 ' />
+      </CldUploadButton>
       <form onSubmit={handleSubmit(onSubmit)} className='flex items-center w-full gap-2 lg:gap-4'>
-        <CldUploadButton
-          options={{ maxFiles: 1 }}
-          onUploadAdded={handleUpload}
-          uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET}
-        >
-          <HiPhoto size={30} className='text-lime-500 ' />
-        </CldUploadButton>
         <MessageInput
           id='message'
           register={register}
