@@ -4,19 +4,21 @@ import { pusherClient } from '@/libs/pusher';
 import { FullMessageType } from '@/types';
 import axios from 'axios';
 import { find } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import MessageBox from './MessageBox';
 
 const Body = () => {
   const [messages, setMessages] = useState<FullMessageType[]>([]);
   const { conversationId } = useConversation();
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     pusherClient.subscribe(conversationId);
 
     //TODO: API 구현해야함
     const messageHandler = (message: FullMessageType) => {
-      axios.post(`/api/conversations/${conversationId}/seen`);
-
+      //axios.post(`/api/conversations/${conversationId}/seen`);
+      console.log(message);
       //채팅목록에 메시지 추가
       setMessages(current => {
         if (find(current, { id: message.id })) {
@@ -24,6 +26,7 @@ const Body = () => {
         }
         return [...current, message];
       });
+      bottomRef?.current?.scrollIntoView();
     };
 
     pusherClient.bind('messages:new', messageHandler);
@@ -35,7 +38,18 @@ const Body = () => {
     };
   }, []);
 
-  return <div>Body</div>;
+  return (
+    <div className='flex-1 overflow-y-auto'>
+      {messages.map((message, index) => (
+        <MessageBox
+          isLast={index === messages.length - 1} //마지막 메시지인지 유무
+          key={message.id}
+          data={message}
+        />
+      ))}
+      <div className='pt-24' ref={bottomRef} />
+    </div>
+  );
 };
 
 export default Body;
