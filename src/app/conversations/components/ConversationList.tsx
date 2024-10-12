@@ -3,10 +3,12 @@ import IconButton from '@/components/IconButton';
 import useConversation from '@/hooks/useConversation';
 import { FullConversationType } from '@/types';
 import { User } from '@prisma/client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 import ConversationBox from './ConversationBox';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
+import { pusherClient } from '@/libs/pusher';
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
@@ -18,6 +20,36 @@ const ConversationList = ({ initialItems, users }: ConversationListProps) => {
   const [items, setItems] = useState(initialItems);
   const { conversationId, isOpen } = useConversation();
   const [isModealOpen, setIsModealOpen] = useState(false);
+  const session = useSession();
+
+  const pusherKey = session.data?.user?.email;
+
+  useEffect(() => {
+    if (!pusherKey) return;
+
+    pusherClient.subscribe(pusherKey);
+
+    const updateHandler = (conversation: FullConversationType) => {
+      setItems(current =>
+        current.map(currentConversation => {
+          if (currentConversation.id === conversationId) {
+            return {
+              ...currentConversation,
+              messages: conversation.messages,
+            };
+          }
+          return currentConversation;
+        }),
+      );
+    };
+
+    pusherClient.bind('conversation:update', updateHandler);
+
+    return () => {
+      pusherClient.unsubscribe(pusherKey);
+      pusherClient.unbind('conversation:update', updateHandler);
+    };
+  }, [pusherKey]);
 
   return (
     <aside
