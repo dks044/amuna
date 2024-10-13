@@ -9,7 +9,7 @@ interface InputProps {
   id: keyof AuthFormValues;
   type?: string;
   required?: boolean;
-  register: UseFormRegister<AuthFormValues>;
+  register: UseFormRegister<AuthFormValues> | UseFormRegister<FieldValues>;
   errors: FieldErrors;
   disabled?: boolean;
 }

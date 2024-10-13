@@ -26,7 +26,7 @@ const ConfirmModal = ({ isOpen, onClose }: ConfirmModalProps) => {
       .then(() => {
         onClose();
         router.push('/conversations');
-        window.location.reload();
+        router.refresh();
       })
       .catch(() => toast.error('에러가 발생했습니다.'))
       .finally(() => setIsLoading(false));
@@ -50,10 +50,10 @@ const ConfirmModal = ({ isOpen, onClose }: ConfirmModalProps) => {
         </div>
       </div>
       <div className='mt-5 sm:mt-4 sm:flex sm:w-full'>
-        <Button disbaled={isLoading} danger onClick={onDelete}>
+        <Button disbaled={isLoading} fullWidth danger onClick={onDelete}>
           삭제
         </Button>
-        <Button disbaled={isLoading} secondary onClick={onClose}>
+        <Button disbaled={isLoading} fullWidth secondary onClick={onClose}>
           취소
         </Button>
       </div>

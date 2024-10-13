@@ -61,7 +61,7 @@ const Form = () => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET!);
-
+      formData.append('folder', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_CHAT_IMAGE_FOLDER_NAME!);
       try {
         const response = await axios.post(`/api/cloudinary`, formData);
         handleUpload(response);
@@ -75,7 +75,7 @@ const Form = () => {
   return (
     <div
       className={`
-        flex items-center w-full gap-2 px-4 py-4 bg-white border-t lg:gap-4    
+        flex items-center w-full gap-2 px-4 py-4 bg-white border-t lg:gap-4 font-notosans
       `}
     >
       <button onClick={() => fileInputRef.current?.click()}>

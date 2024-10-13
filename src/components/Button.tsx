@@ -37,7 +37,6 @@ const Button = ({
       focus-visible:outline
       focus-visible:outline-2
       focus-visible:outline-offset-2
-      w-full
       `,
         disbaled && 'opacity-50 cursor-default',
         fullWidth && 'w-full',

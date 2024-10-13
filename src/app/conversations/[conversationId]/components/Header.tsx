@@ -17,15 +17,17 @@ interface HeaderProps {
 }
 
 const Header = ({ conversation }: HeaderProps) => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const otherUser = useOtherUser(conversation);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const { members } = useActiveList();
   const isActive = members.indexOf(otherUser?.email!) !== -1;
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
       return `${conversation.users.length} members`;
     }
-    return isActive ? '온라인' : '오프라인';
+
+    return isActive ? 'Active' : 'Offline';
   }, [conversation, isActive]);
 
   return (

@@ -45,3 +45,14 @@ $grid-background-dark: repeating-linear-gradient(
 .grid-background-dark {
   background-image: $grid-background-dark;
 }
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('/fonts/NotoSansKR-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-notosans {
+  font-family: 'NotoSansKR', sans-serif;
+}

@@ -38,7 +38,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
             >
               <DialogPanel
                 className={`relative w-full px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white
-                   rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-lg sm:p-6
+                   rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-lg sm:p-6 overflow-y-auto
                   `}
               >
                 <div className='absolute top-0 right-0 z-10 hidden pt-4 pr-4 sm:block'>
