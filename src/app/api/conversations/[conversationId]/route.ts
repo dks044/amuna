@@ -2,6 +2,7 @@ import getCurrentUser from '@/app/actions/getCurrentUser';
 import { NextResponse } from 'next/server';
 import prisma from '@/libs/prismadb';
 import { pusherServer } from '@/libs/pusher';
+import { deleteImageFromCloudinary } from '@/app/utils/cloudInary';
 
 interface Iparam {
   conversationId?: string;
@@ -20,11 +21,22 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
       },
       include: {
         users: true,
+        messages: true,
       },
     });
     if (!existingConversation) {
       return new NextResponse('Invalid Id', { status: 404 });
     }
+
+    //채팅방 안에 이미지메시지 제거
+    const deleteImagePromises = existingConversation.messages.map(async message => {
+      if (message.image) {
+        await deleteImageFromCloudinary(message.image);
+      }
+    });
+
+    await Promise.all(deleteImagePromises);
+
     const deletedConversation = await prisma.conversation.deleteMany({
       where: {
         id: conversationId,
