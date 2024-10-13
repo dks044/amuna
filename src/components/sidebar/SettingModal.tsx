@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import Modal from '../modals/Modal';
 
 interface SettingModalProps {
   isOpen: boolean;
@@ -49,7 +50,11 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
       .finally(() => setIsLoading(false));
   };
 
-  return <div>SettingModal</div>;
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <></>
+    </Modal>
+  );
 };
 
 export default SettingModal;

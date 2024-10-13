@@ -21,7 +21,7 @@ const Body = ({ initialMessages }: BodyProps) => {
 
     //TODO: API 구현해야함
     const messageHandler = (message: FullMessageType) => {
-      axios.post(`/api/conversations/${conversationId}/seen`);
+      //axios.post(`/api/conversations/${conversationId}/seen`);
       //채팅목록에 메시지 추가
       setMessages(current => {
         if (find(current, { id: message.id })) {
