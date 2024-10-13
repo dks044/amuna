@@ -16,6 +16,14 @@ const Body = ({ initialMessages }: BodyProps) => {
   const { conversationId } = useConversation();
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  // 메시지를 정렬
+  useEffect(() => {
+    const sortedMessages = [...messages].sort((a, b) => {
+      return new Date(a.cretedAt).getTime() - new Date(b.cretedAt).getTime();
+    });
+    setMessages(sortedMessages);
+  }, [initialMessages]);
+
   useEffect(() => {
     pusherClient.subscribe(conversationId);
 

@@ -28,7 +28,7 @@ const MessageBox = ({ data, isLast }: MessageBoxProps) => {
   const avatar = clsx(isOwn && 'order-2');
   const body = clsx('flex flex-col gap-2', isOwn && 'items-end');
   const message = clsx(
-    'text-sm w-fit overflow-hidden',
+    'flex text-sm w-fit overflow-hidden items-center',
     isOwn ? 'bg-lime-500 text-white' : 'bg-gray-100',
     data.image ? 'rounded-md p-0' : 'rounded-full py-2 px-3',
   );
