@@ -22,7 +22,7 @@ const Form = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = data => {
-    setValue('message', '');
+    setValue('message', '', { shouldValidate: true });
     axios.post(`/api/messages`, {
       ...data,
       conversationId: conversationId,
