@@ -30,7 +30,7 @@ const Form = () => {
   };
 
   const handleUpload = (result: any) => {
-    axios.post('api/messages', {
+    axios.post(`/api/messages`, {
       image: result.info.secure_url,
       conversationId: conversationId,
     });
@@ -44,7 +44,7 @@ const Form = () => {
     >
       <CldUploadButton
         options={{ maxFiles: 1 }}
-        onUploadAddedAction={handleUpload}
+        onUploadAdded={handleUpload}
         uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET}
       >
         <HiPhoto size={30} className='text-lime-500 ' />

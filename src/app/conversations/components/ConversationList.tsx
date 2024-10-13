@@ -9,6 +9,7 @@ import ConversationBox from './ConversationBox';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import { pusherClient } from '@/libs/pusher';
+import { find } from 'lodash';
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
@@ -43,11 +44,21 @@ const ConversationList = ({ initialItems, users }: ConversationListProps) => {
       );
     };
 
-    pusherClient.bind('conversation:update', updateHandler);
+    const newHandler = (conversation: FullConversationType) => {
+      setItems(current => {
+        if (find(current, { id: conversation.id })) {
+          return current;
+        }
+        return [conversation, ...current];
+      });
+    };
 
+    pusherClient.bind('conversation:update', updateHandler);
+    pusherClient.bind('conversation:new', newHandler);
     return () => {
       pusherClient.unsubscribe(pusherKey);
       pusherClient.unbind('conversation:update', updateHandler);
+      pusherClient.unbind('conversation:new', newHandler);
     };
   }, [pusherKey]);
 
