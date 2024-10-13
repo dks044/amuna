@@ -2,7 +2,7 @@
 import { User } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import Modal from '../modals/Modal';
@@ -26,6 +26,9 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [skills, setSkills] = useState<TechStack[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [cloudInaryResponse, setCloudInaryResponse] = useState<any>(null);
 
   const {
     register,
@@ -42,20 +45,20 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
   });
   const image = watch('image');
 
-  const handleUpload = (result: any) => {
-    setValue('image', result.info.secure_url, {
-      shouldValidate: true,
-    });
-  };
-
-  const onSubmit: SubmitHandler<FieldValues> = data => {
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
     setIsLoading(true);
+    await handleUpload();
+    const requestData = {
+      ...data,
+      skills,
+      image: cloudInaryResponse?.data?.uploadedImageData?.url,
+    };
+    console.log(cloudInaryResponse);
 
     axios
-      .post(`/api/settings`, data)
+      .post(`/api/settings`, requestData)
       .then(() => {
         onClose();
-        window.location.reload();
       })
       .catch(() => toast.error('에러가 발생했습니다.'))
       .finally(() => setIsLoading(false));
@@ -75,6 +78,44 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
       const updateSkills = prevSkills.filter(prevSkill => prevSkill !== skill);
       return updateSkills;
     });
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+
+    if (files && files.length > 0) {
+      const file = files[0];
+
+      // 파일 타입 검사
+      if (!file.type.startsWith('image/')) {
+        toast.error('이미지 파일만 올려주세요');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+
+      // 파일 크기 검사 (2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error('2MB 미만으로 올려주세요');
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+      setFile(file);
+      setValue('image', URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append('file', file!);
+    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET!);
+    formData.append('folder', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_USER_IMAGE_FOLDER_NAME!);
+    try {
+      const response = await axios.post(`/api/cloudinary`, formData);
+      setCloudInaryResponse(response);
+    } catch (error) {
+      console.log(error);
+      toast.error('에러가 발생했습니다.');
+    }
   };
 
   useEffect(() => {
@@ -118,9 +159,21 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
                       src={image || currentUser?.image || '/images/placeholder.jpg'}
                       alt='Avatar'
                     />
-                    <Button disbaled={isLoading} secondary type='button'>
+                    <Button
+                      disbaled={isLoading}
+                      secondary
+                      type='button'
+                      onClick={() => fileInputRef.current?.click()}
+                    >
                       변경하기
                     </Button>
+                    <input
+                      type='file'
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      className='hidden'
+                      accept='image/*'
+                    />
                   </div>
                   <label
                     htmlFor='photo'
