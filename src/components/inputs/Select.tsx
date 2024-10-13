@@ -61,7 +61,7 @@ const Select: React.FC<SelectProps> = ({
         )}
       >
         <option value='' disabled>
-          선택하세요
+          성별은 나중에 변경할 수 없어요.
         </option>
         {selectItems.map(item => (
           <option key={item.value} value={item.value}>

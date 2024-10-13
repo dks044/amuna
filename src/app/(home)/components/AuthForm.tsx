@@ -46,7 +46,7 @@ const AuthForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AuthFormValues>({
+  } = useForm<FieldValues>({
     defaultValues: {
       name: '',
       email: '',
@@ -55,7 +55,7 @@ const AuthForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<AuthFormValues> = data => {
+  const onSubmit: SubmitHandler<FieldValues> = data => {
     setIsLoading(true);
     const { name, email, password, gender } = data;
 
