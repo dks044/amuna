@@ -7,8 +7,12 @@ import { find } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import MessageBox from './MessageBox';
 
-const Body = () => {
-  const [messages, setMessages] = useState<FullMessageType[]>([]);
+interface BodyProps {
+  initialMessages: FullMessageType[];
+}
+
+const Body = ({ initialMessages }: BodyProps) => {
+  const [messages, setMessages] = useState<FullMessageType[]>(initialMessages);
   const { conversationId } = useConversation();
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -17,8 +21,7 @@ const Body = () => {
 
     //TODO: API 구현해야함
     const messageHandler = (message: FullMessageType) => {
-      //axios.post(`/api/conversations/${conversationId}/seen`);
-      console.log(message);
+      axios.post(`/api/conversations/${conversationId}/seen`);
       //채팅목록에 메시지 추가
       setMessages(current => {
         if (find(current, { id: message.id })) {
