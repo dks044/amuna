@@ -18,9 +18,11 @@ interface ProfileDrawerProps {
   data: Conversation & {
     users: User[];
   };
+
+  currentUser: User;
 }
 
-const ProfileDrawer = ({ isOpen, onClose, data }: ProfileDrawerProps) => {
+const ProfileDrawer = ({ isOpen, onClose, data, currentUser }: ProfileDrawerProps) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const otherUser = useOtherUser(data);
 
@@ -44,7 +46,12 @@ const ProfileDrawer = ({ isOpen, onClose, data }: ProfileDrawerProps) => {
 
   return (
     <>
-      <ConfirmModal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)} />
+      <ConfirmModal
+        data={data}
+        currentUser={currentUser}
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+      />
       <Transition show={isOpen} as={Fragment}>
         <Dialog as='div' className='relative z-50' onClose={onClose}>
           <TransitionChild

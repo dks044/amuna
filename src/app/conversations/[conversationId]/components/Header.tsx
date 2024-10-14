@@ -14,9 +14,10 @@ interface HeaderProps {
   conversation: Conversation & {
     users: User[];
   };
+  currentUser: User;
 }
 
-const Header = ({ conversation }: HeaderProps) => {
+const Header = ({ conversation, currentUser }: HeaderProps) => {
   const otherUser = useOtherUser(conversation);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -32,7 +33,12 @@ const Header = ({ conversation }: HeaderProps) => {
 
   return (
     <React.Fragment>
-      <ProfileDrawer data={conversation} isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <ProfileDrawer
+        currentUser={currentUser}
+        data={conversation}
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      />
       <div
         className='
         bg-white 
