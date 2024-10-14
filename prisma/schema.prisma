@@ -93,6 +93,7 @@ model Message {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   body String?
   image String?
+  chatroomEnter Boolean? //오픈채팅방 입장 유무
   cretedAt DateTime @default(now())
 
   seenIds String[] @db.ObjectId

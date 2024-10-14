@@ -71,7 +71,7 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
       <EnterModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        data={selectedConversation!}
+        conversation={selectedConversation!}
       />
       <div
         className={`
