@@ -29,12 +29,12 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [cloudInaryResponse, setCloudInaryResponse] = useState<any>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -43,25 +43,26 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
       introduce: currentUser.introduce,
     },
   });
-  const image = watch('image');
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     setIsLoading(true);
-    await handleUpload();
+
+    const uploadedImageUrl = await handleUpload();
+
     const requestData = {
       ...data,
       skills,
-      image: cloudInaryResponse?.data?.uploadedImageData?.url,
+      image: uploadedImageUrl || currentUser.image,
     };
-    console.log(cloudInaryResponse);
 
-    axios
-      .post(`/api/settings`, requestData)
-      .then(() => {
-        onClose();
-      })
-      .catch(() => toast.error('에러가 발생했습니다.'))
-      .finally(() => setIsLoading(false));
+    try {
+      await axios.post(`/api/settings`, requestData);
+      onClose();
+    } catch (error) {
+      toast.error('에러가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onClickToSetSkills = (skill: TechStack) => {
@@ -100,21 +101,26 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
         return;
       }
       setFile(file);
-      setValue('image', URL.createObjectURL(file));
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
   const handleUpload = async () => {
+    if (!file) return null;
+
     const formData = new FormData();
     formData.append('file', file!);
     formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET!);
     formData.append('folder', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_USER_IMAGE_FOLDER_NAME!);
+
     try {
       const response = await axios.post(`/api/cloudinary`, formData);
-      setCloudInaryResponse(response);
+      console.log(response.data);
+      return response.data.uploadedImageData.secure_url;
     } catch (error) {
       console.log(error);
       toast.error('에러가 발생했습니다.');
+      return null;
     }
   };
 
@@ -156,7 +162,7 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
                       width='48'
                       height='48'
                       className='rounded-full'
-                      src={image || currentUser?.image || '/images/placeholder.jpg'}
+                      src={imagePreview || currentUser?.image || '/images/placeholder.jpg'}
                       alt='Avatar'
                     />
                     <Button
@@ -168,6 +174,7 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
                       변경하기
                     </Button>
                     <input
+                      id='image'
                       type='file'
                       ref={fileInputRef}
                       onChange={handleFileChange}

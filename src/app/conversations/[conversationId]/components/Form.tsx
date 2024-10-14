@@ -33,7 +33,7 @@ const Form = () => {
 
   const handleUpload = (response: any) => {
     axios.post('/api/messages', {
-      image: response.data.uploadedImageData.url,
+      image: response.data.uploadedImageData.secure_url,
       conversationId: conversationId,
     });
   };
