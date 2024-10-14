@@ -1,13 +1,25 @@
 'use client';
 import getUsers from '@/app/actions/getUsers';
 import IconButton from '@/components/IconButton';
-import React from 'react';
+import OpenChatModal from '@/components/modals/OpenChatModal';
+import { User } from '@prisma/client';
+import React, { useState } from 'react';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 
-const DesktopSideMenu = async () => {
+interface DesktopSideMenuProps {
+  currentUser: User;
+}
+const DesktopSideMenu = ({ currentUser }: DesktopSideMenuProps) => {
+  const [isModealOpen, setIsModealOpen] = useState(false);
   return (
-    <div
-      className={`
+    <>
+      <OpenChatModal
+        currentUser={currentUser}
+        isOpen={isModealOpen}
+        onClose={() => setIsModealOpen(false)}
+      />
+      <div
+        className={`
       fixed
       inset-y-0
       left-0
@@ -21,21 +33,25 @@ const DesktopSideMenu = async () => {
       pt-6
       border-r-[1px]
     `}
-    >
-      <div
-        className={`
+      >
+        <div
+          className={`
         flex
         justify-center
         items-center
         w-full
       `}
-      >
-        <div className='text-2xl font-bold text-neutral-800'>AMUNA</div>
-        <div className='w-7 h-7 bg-transparent absolute right-3'>
-          <IconButton icon={MdOutlineGroupAdd} />
+        >
+          <div className='text-2xl font-bold text-neutral-800'>AMUNA</div>
+          <div
+            className='w-7 h-7 bg-transparent absolute right-3'
+            onClick={() => setIsModealOpen(true)}
+          >
+            <IconButton icon={MdOutlineGroupAdd} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

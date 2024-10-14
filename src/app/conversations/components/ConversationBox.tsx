@@ -77,7 +77,11 @@ const ConversationBox = ({ data, selected }: ConversationBoxProps) => {
         selected ? 'bg-neutral-300' : 'bg-white',
       )}
     >
-      {data.isGroup ? <AvataGroup /> : <Avatar user={otherUser} />}
+      {data.isGroup ? (
+        <AvataGroup thumbnail={data.image!} users={data.users} />
+      ) : (
+        <Avatar user={otherUser} />
+      )}
       <div className='flex-1 min-w-0 '>
         <div className='focus:outline-none'>
           <div className='flex items-center justify-between mb-1'>

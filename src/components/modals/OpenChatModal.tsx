@@ -14,6 +14,7 @@ import { TechStack } from '@/types/types';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 interface OpenChatModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ interface OpenChatModalProps {
 }
 
 const OpenChatModal = ({ isOpen, onClose, currentUser }: OpenChatModalProps) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -44,18 +46,18 @@ const OpenChatModal = ({ isOpen, onClose, currentUser }: OpenChatModalProps) => 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     setIsLoading(true);
 
-    //const uploadedImageUrl = await handleUpload();
+    const uploadedImageUrl = await handleUpload();
 
     const requestData = {
-      // ...data,
-      // skills,
-      // image: uploadedImageUrl || currentUser.image,
+      ...data,
+      skills,
+      image: uploadedImageUrl || null,
     };
 
     try {
-      //TODO: API 구현 및 경로 수정해야함
-      await axios.post(`/api/settings`, requestData);
+      await axios.post(`/api/conversations/group`, requestData);
       onClose();
+      router.push('/chatrooms');
     } catch (error) {
       toast.error('에러가 발생했습니다.');
     } finally {
@@ -79,6 +81,27 @@ const OpenChatModal = ({ isOpen, onClose, currentUser }: OpenChatModalProps) => 
     });
   };
 
+  const handleUpload = async () => {
+    if (!file) return null;
+
+    const formData = new FormData();
+    formData.append('file', file!);
+    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET!);
+    formData.append(
+      'folder',
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_CHATROOM_IMAGE_FOLDER_NAME!,
+    );
+
+    try {
+      const response = await axios.post(`/api/cloudinary`, formData);
+      return response.data.uploadedImageData.secure_url;
+    } catch (error) {
+      console.log(error);
+      toast.error('에러가 발생했습니다.');
+      return null;
+    }
+  };
+
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
@@ -92,9 +115,9 @@ const OpenChatModal = ({ isOpen, onClose, currentUser }: OpenChatModalProps) => 
         return;
       }
 
-      // 파일 크기 검사 (2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error('2MB 미만으로 올려주세요');
+      // 파일 크기 검사 (1MB)
+      if (file.size > 1 * 1024 * 1024) {
+        toast.error('1MB 미만으로 올려주세요');
         if (fileInputRef.current) fileInputRef.current.value = '';
         return;
       }

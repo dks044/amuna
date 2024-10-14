@@ -6,7 +6,6 @@ import getConversations from '../actions/getConversations';
 import getCurrentUser from '../actions/getCurrentUser';
 
 const ConversationsLayout = async ({ children }: { children: React.ReactNode }) => {
-  const users = await getUsers();
   const conversations = await getConversations();
   const currentUser = await getCurrentUser();
   return (
@@ -14,7 +13,6 @@ const ConversationsLayout = async ({ children }: { children: React.ReactNode }) 
       <div className='h-full'>
         <ConversationList
           currentUser={currentUser!}
-          users={users}
           title='Messages'
           initialItems={conversations}
         />

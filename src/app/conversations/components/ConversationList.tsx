@@ -15,12 +15,11 @@ import OpenChatModal from '@/components/modals/OpenChatModal';
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
-  users: User[];
   title?: string;
   currentUser: User;
 }
 
-const ConversationList = ({ initialItems, users, currentUser }: ConversationListProps) => {
+const ConversationList = ({ initialItems, currentUser }: ConversationListProps) => {
   const [items, setItems] = useState(initialItems);
   const { conversationId, isOpen } = useConversation();
   const [isModealOpen, setIsModealOpen] = useState(false);

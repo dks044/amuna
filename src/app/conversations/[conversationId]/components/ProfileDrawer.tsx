@@ -25,12 +25,12 @@ const ProfileDrawer = ({ isOpen, onClose, data }: ProfileDrawerProps) => {
   const otherUser = useOtherUser(data);
 
   const joinedDate = useMemo(() => {
-    return format(new Date(otherUser.createdAt), 'PP');
-  }, [otherUser.createdAt]);
+    if (otherUser) return format(new Date(otherUser.createdAt), 'PP');
+  }, [otherUser?.createdAt]);
 
   const title = useMemo(() => {
     return data.name || otherUser.name;
-  }, [data.name, otherUser.name]);
+  }, [data.name, otherUser?.name]);
 
   const { members } = useActiveList();
   const isActive = members.indexOf(otherUser?.email!) !== -1;
@@ -90,7 +90,7 @@ const ProfileDrawer = ({ isOpen, onClose, data }: ProfileDrawerProps) => {
                         <div className='flex flex-col items-center'>
                           <div className='mb-2'>
                             {data.isGroup ? (
-                              <AvatarGroup users={data.users} />
+                              <AvatarGroup thumbnail={data.image!} users={data.users} />
                             ) : (
                               <Avatar user={otherUser} />
                             )}

@@ -56,7 +56,7 @@ const Header = ({ conversation }: HeaderProps) => {
             <HiChevronLeft size={32} />
           </Link>
           {conversation.isGroup ? (
-            <AvatarGroup users={conversation.users} />
+            <AvatarGroup thumbnail={conversation.image!} users={conversation.users} />
           ) : (
             <Avatar user={otherUser} />
           )}
