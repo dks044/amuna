@@ -9,15 +9,14 @@ import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/re
 import { IoClose, IoTrash } from 'react-icons/io5';
 import AvatarGroup from '@/components/AvataGroup';
 import Avatar from '@/components/Avatar';
+import { FullConversationType } from '@/types';
 
 interface ProfileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
 
   //채팅방 참여한 유저들
-  data: Conversation & {
-    users: User[];
-  };
+  data: FullConversationType;
 
   currentUser: User;
 }

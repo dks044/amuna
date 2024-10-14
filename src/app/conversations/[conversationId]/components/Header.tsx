@@ -5,19 +5,20 @@ import useActiveList from '@/hooks/useActiveList';
 import useOtherUser from '@/hooks/useOtheruser';
 import { Conversation, User } from '@prisma/client';
 import Link from 'next/link';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { HiChevronLeft } from 'react-icons/hi';
 import { HiEllipsisHorizontal } from 'react-icons/hi2';
 import ProfileDrawer from './ProfileDrawer';
+import { pusherClient } from '@/libs/pusher';
+import { FullConversationType } from '@/types';
 
 interface HeaderProps {
-  conversation: Conversation & {
-    users: User[];
-  };
+  conversation: FullConversationType;
   currentUser: User;
 }
 
 const Header = ({ conversation, currentUser }: HeaderProps) => {
+  const [item, setItem] = useState<FullConversationType | null>(conversation);
   const otherUser = useOtherUser(conversation);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -25,17 +26,32 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
   const isActive = members.indexOf(otherUser?.email!) !== -1;
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
-      return `${conversation.users.length} members`;
+      return `${item?.users.length} members`;
     }
 
     return isActive ? 'Active' : 'Offline';
-  }, [conversation, isActive]);
+  }, [item, isActive]);
+
+  const pusherKey = currentUser.email;
+  useEffect(() => {
+    pusherClient.subscribe(pusherKey!);
+    const updateHandler = (conversation: FullConversationType) => {
+      console.log('New conversation received:', conversation);
+      setItem(conversation);
+    };
+    pusherClient.bind('conversation:update', updateHandler);
+
+    return () => {
+      pusherClient.unsubscribe(pusherKey!);
+      pusherClient.unbind('conversation:update', updateHandler);
+    };
+  }, [pusherKey]);
 
   return (
     <React.Fragment>
       <ProfileDrawer
         currentUser={currentUser}
-        data={conversation}
+        data={item!}
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
@@ -68,7 +84,9 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
           )}
           <div className='flex flex-col '>
             <div>{conversation.name || otherUser.name}</div>
-            <div className='text-sm font-light text-neutral-500'>{statusText}</div>
+            <div className='text-sm font-light text-neutral-500'>
+              {item?.isGroup ? <>{item?.users.length}&nbsp;members</> : <>{statusText}</>}
+            </div>
           </div>
         </div>
         <HiEllipsisHorizontal
