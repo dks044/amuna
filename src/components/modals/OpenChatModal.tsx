@@ -1,60 +1,59 @@
 'use client';
-import { User } from '@prisma/client';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import Modal from './Modal';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import Modal from '../modals/Modal';
-import Button from '../Button';
-import Image from 'next/image';
+import { User } from '@prisma/client';
 import Input from '../inputs/Input';
+import Image from 'next/image';
+import Button from '../Button';
 import TextArea from '../inputs/TextArea';
 import SearchSkillBar from '../SearchSkillBar';
-import { TechStack } from '@/types/types';
 import SkillIcon from '../SkillIcon';
 import { TiDelete } from 'react-icons/ti';
+import { TechStack } from '@/types/types';
 import clsx from 'clsx';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
-interface SettingModalProps {
+interface OpenChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentUser: User;
 }
 
-const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
-  const router = useRouter();
+const OpenChatModal = ({ isOpen, onClose, currentUser }: OpenChatModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [skills, setSkills] = useState<TechStack[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [skills, setSkills] = useState<TechStack[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: currentUser.name,
-      image: currentUser.image,
-      introduce: currentUser.introduce,
+      name: '',
+      image: null,
+      isGroup: true,
+      createdBy: currentUser.id,
     },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     setIsLoading(true);
 
-    const uploadedImageUrl = await handleUpload();
+    //const uploadedImageUrl = await handleUpload();
 
     const requestData = {
-      ...data,
-      skills,
-      image: uploadedImageUrl || currentUser.image,
+      // ...data,
+      // skills,
+      // image: uploadedImageUrl || currentUser.image,
     };
 
     try {
+      //TODO: API 구현 및 경로 수정해야함
       await axios.post(`/api/settings`, requestData);
       onClose();
     } catch (error) {
@@ -104,40 +103,18 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) return null;
-
-    const formData = new FormData();
-    formData.append('file', file!);
-    formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET!);
-    formData.append('folder', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_USER_IMAGE_FOLDER_NAME!);
-
-    try {
-      const response = await axios.post(`/api/cloudinary`, formData);
-      console.log(response.data);
-      return response.data.uploadedImageData.secure_url;
-    } catch (error) {
-      console.log(error);
-      toast.error('에러가 발생했습니다.');
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      const currentUserSkills = currentUser.tags as TechStack[];
-      setSkills(currentUserSkills);
-    }
-  }, [isOpen]);
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className='flex-1 h-100'>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='space-y-12'>
             <div className='pb-12 border-b border-gray-900/10'>
-              <h2 className='text-base font-semibold leading-7 text-gray-900 '>프로필</h2>
-              <p className='mt-1 text-sm leading-6 text-gray-600'>프로필을 수정하세요.</p>
+              <h2 className='text-base font-semibold leading-7 text-gray-900 '>
+                관심사 채팅방 생성
+              </h2>
+              <p className='mt-1 text-sm leading-6 text-gray-600'>
+                관심사 오픈 채팅방을 생성하세요.
+              </p>
 
               <div className='flex flex-col mt-10 gap-y-8'>
                 <Input
@@ -147,21 +124,20 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
                   errors={errors}
                   required
                   register={register}
-                  defaultValue={currentUser.name!}
                 />
                 <div>
                   <label
                     htmlFor='photo'
                     className='block text-sm font-medium leading-6 text-gray-900 '
                   >
-                    프로필 사진
+                    채팅방 사진
                   </label>
                   <div className='flex items-center mt-2'>
                     <Image
                       width='48'
                       height='48'
                       className='rounded-full'
-                      src={imagePreview || currentUser?.image || '/images/placeholder.jpg'}
+                      src={imagePreview || '/images/placeholder.jpg'}
                       alt='Avatar'
                     />
                     <Button
@@ -181,21 +157,6 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
                       accept='image/*'
                     />
                   </div>
-                  <label
-                    htmlFor='photo'
-                    className='block text-sm font-medium leading-6 text-gray-900 mt-7'
-                  >
-                    소개글
-                  </label>
-                  <TextArea
-                    id='introduce'
-                    register={register}
-                    required
-                    errors={errors}
-                    disabled={isLoading}
-                    maxLength={50}
-                    defaultValue={currentUser.introduce!}
-                  />
                   <label
                     htmlFor='photo'
                     className='block text-sm font-medium leading-6 text-gray-900 mt-7 mb-2'
@@ -240,4 +201,4 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
   );
 };
 
-export default SettingModal;
+export default OpenChatModal;

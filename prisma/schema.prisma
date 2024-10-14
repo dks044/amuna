@@ -77,7 +77,9 @@ model Conversation {
   lastMessageAt DateTime @default(now())
   name String?
   tag  String[]
+  image String?
   isGroup Boolean?
+  createdBy    String?  @db.ObjectId //오픈(그륩) 채팅방 생성자
 
   messageIds String[] @db.ObjectId
   messages Message[]

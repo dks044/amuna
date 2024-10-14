@@ -10,14 +10,17 @@ import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import { pusherClient } from '@/libs/pusher';
 import { find } from 'lodash';
+import OpenChatModal from '@/components/modals/OpenChatModal';
+//import OpenChatModal from '@/components/modals/OpenChatModal';
 
 interface ConversationListProps {
   initialItems: FullConversationType[];
   users: User[];
   title?: string;
+  currentUser: User;
 }
 
-const ConversationList = ({ initialItems, users }: ConversationListProps) => {
+const ConversationList = ({ initialItems, users, currentUser }: ConversationListProps) => {
   const [items, setItems] = useState(initialItems);
   const { conversationId, isOpen } = useConversation();
   const [isModealOpen, setIsModealOpen] = useState(false);
@@ -71,9 +74,15 @@ const ConversationList = ({ initialItems, users }: ConversationListProps) => {
   }, [pusherKey]);
 
   return (
-    <aside
-      className={clsx(
-        `
+    <>
+      <OpenChatModal
+        currentUser={currentUser!}
+        isOpen={isModealOpen}
+        onClose={() => setIsModealOpen(false)}
+      />
+      <aside
+        className={clsx(
+          `
         fixed
         inset-y-0
         pb-20
@@ -85,21 +94,22 @@ const ConversationList = ({ initialItems, users }: ConversationListProps) => {
         border-r
         border-gray-200
       `,
-        isOpen ? 'hidden' : 'block w-full left-0',
-      )}
-    >
-      <div className='px-5'>
-        <div className='flex justify-center items-center pt-6 mb-4'>
-          <div className='text-2xl font-bold text-neutral-800'>AMUNA</div>
-          <div className='w-7 h-7 bg-transparent absolute right-3'>
-            <IconButton icon={MdOutlineGroupAdd} onClick={() => setIsModealOpen(true)} />
+          isOpen ? 'hidden' : 'block w-full left-0',
+        )}
+      >
+        <div className='px-5'>
+          <div className='flex justify-center items-center pt-6 mb-4'>
+            <div className='text-2xl font-bold text-neutral-800'>AMUNA</div>
+            <div className='w-7 h-7 bg-transparent absolute right-3'>
+              <IconButton icon={MdOutlineGroupAdd} onClick={() => setIsModealOpen(true)} />
+            </div>
           </div>
+          {items.map(item => (
+            <ConversationBox key={item.id} data={item} selected={conversationId === item.id} />
+          ))}
         </div>
-        {items.map(item => (
-          <ConversationBox key={item.id} data={item} selected={conversationId === item.id} />
-        ))}
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 };
 
