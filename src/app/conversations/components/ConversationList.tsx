@@ -24,7 +24,6 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
   const { conversationId, isOpen } = useConversation();
   const [isModealOpen, setIsModealOpen] = useState(false);
   const session = useSession();
-
   const pusherKey = session.data?.user?.email;
 
   useEffect(() => {

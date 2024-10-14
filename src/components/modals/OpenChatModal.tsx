@@ -140,13 +140,16 @@ const OpenChatModal = ({ isOpen, onClose, currentUser }: OpenChatModalProps) => 
               </p>
 
               <div className='flex flex-col mt-10 gap-y-8'>
-                <Input
-                  disabled={isLoading}
+                <TextArea
                   label='이름'
                   id='name'
-                  errors={errors}
-                  required
                   register={register}
+                  required
+                  errors={errors}
+                  disabled={isLoading}
+                  maxLength={20}
+                  defaultValue={currentUser.introduce!}
+                  rows={2}
                 />
                 <div>
                   <label

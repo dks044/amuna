@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       return new NextResponse('Unauthorized', { status: 400 });
     }
 
-    const { name, image, isGroup, createdBy } = await request.json();
+    const { name, image, isGroup, createdBy, skills } = await request.json();
 
     const newConversation = await prisma.conversation.create({
       data: {
@@ -18,6 +18,7 @@ export async function POST(request: Request) {
         image,
         isGroup,
         createdBy,
+        tag: skills,
         users: {
           connect: [
             {

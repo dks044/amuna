@@ -2,12 +2,19 @@
 import SearchBar from '@/components/SearchBar';
 import SearchSkillBar from '@/components/SearchSkillBar';
 import SkillIcon from '@/components/SkillIcon';
+import { FullConversationType } from '@/types';
 import { TechStack } from '@/types/types';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { TiDelete } from 'react-icons/ti';
+import ChatroomCard from './ChatroomCard';
 
-const DesktopUI = () => {
+interface DesktopUIInterface {
+  publicConversations: FullConversationType[];
+}
+
+const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
+  const [items, setItems] = useState(publicConversations);
   const [keyword, setKeyword] = useState<string>('');
   const [skills, setSkills] = useState<TechStack[]>([]);
 
@@ -75,6 +82,11 @@ const DesktopUI = () => {
             ))}
           </div>
         </div>
+      </div>
+      <div className='flex gap-3 mt-5 flex-wrap px-5'>
+        {items.map(item => (
+          <ChatroomCard data={item} key={item.id} />
+        ))}
       </div>
     </div>
   );
