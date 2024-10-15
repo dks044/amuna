@@ -4,7 +4,9 @@ import IconButton from '@/components/IconButton';
 import OpenChatModal from '@/components/modals/OpenChatModal';
 import { User } from '@prisma/client';
 import React, { useState } from 'react';
+import { BsGithub } from 'react-icons/bs';
 import { MdOutlineGroupAdd } from 'react-icons/md';
+import { FaBook } from 'react-icons/fa';
 
 interface DesktopSideMenuProps {
   currentUser: User;
@@ -48,6 +50,33 @@ const DesktopSideMenu = ({ currentUser }: DesktopSideMenuProps) => {
             onClick={() => setIsModealOpen(true)}
           >
             <IconButton icon={MdOutlineGroupAdd} />
+          </div>
+        </div>
+        {/* 배너 */}
+        <div
+          className='absolute bottom-20 flex h-20 bg-[#03c75a] w-full justify-center transition hover:bg-[#16BD61] cursor-pointer'
+          onClick={() => {
+            window.open('https://blog.naver.com/buzz7811', '_blank');
+          }}
+        >
+          <div className='flex flex-col justify-center items-center'>
+            <div>
+              <FaBook className='text-white ' size={30} />
+            </div>
+            <div className='text-white'>개발자 기술블로그</div>
+          </div>
+        </div>
+        <div
+          className='absolute bottom-0 flex h-20 bg-black w-full justify-center transition hover:bg-gray-900 cursor-pointer'
+          onClick={() => {
+            window.open('https://github.com/dks044', '_blank');
+          }}
+        >
+          <div className='flex flex-col justify-center items-center'>
+            <div>
+              <BsGithub className='text-white ' size={30} />
+            </div>
+            <div className='text-white'>개발자 GITHUB</div>
           </div>
         </div>
       </div>

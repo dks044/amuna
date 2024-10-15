@@ -118,9 +118,18 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
               <IconButton icon={MdOutlineGroupAdd} onClick={() => setIsModealOpen(true)} />
             </div>
           </div>
-          {items.map(item => (
-            <ConversationBox key={item.id} data={item} selected={conversationId === item.id} />
-          ))}
+          {items.length === 0 ? (
+            <div
+              className='w-full text-gray-300 flex justify-center text-lg transition hover:text-gray-500 cursor-pointer'
+              onClick={() => router.push('chatrooms')}
+            >
+              <div>채팅방이 비었어요, 어서 대화 하러가요!</div>
+            </div>
+          ) : (
+            items.map(item => (
+              <ConversationBox key={item.id} data={item} selected={conversationId === item.id} />
+            ))
+          )}
         </div>
       </aside>
     </>
