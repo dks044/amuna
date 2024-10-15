@@ -11,6 +11,8 @@ import { useSession } from 'next-auth/react';
 import { pusherClient } from '@/libs/pusher';
 import { find } from 'lodash';
 import OpenChatModal from '@/components/modals/OpenChatModal';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 //import OpenChatModal from '@/components/modals/OpenChatModal';
 
 interface ConversationListProps {
@@ -20,6 +22,7 @@ interface ConversationListProps {
 }
 
 const ConversationList = ({ initialItems, currentUser }: ConversationListProps) => {
+  const router = useRouter();
   const [items, setItems] = useState(initialItems);
   const { conversationId, isOpen } = useConversation();
   const [isModealOpen, setIsModealOpen] = useState(false);
@@ -55,12 +58,16 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
     };
 
     const removeHandler = (conversation: FullConversationType) => {
+      toast('채팅방이 삭제됐어요.');
+      router.push('/conversations');
       setItems(current => {
         return [...current.filter(item => item.id !== conversation.id)];
       });
     };
 
     const leaveHandler = (conversation: FullConversationType) => {
+      toast('채팅방이 나갔어요.');
+      router.push('/conversations');
       setItems(current => {
         return current.filter(item => item.id !== conversation.id);
       });
