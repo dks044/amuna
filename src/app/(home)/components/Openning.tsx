@@ -40,7 +40,7 @@ const Opening = () => {
       <motion.div
         className={`mt-10 text-2xl text-gray-900 transition-opacity duration-500 ${scrolling ? 'opacity-100' : 'opacity-0'}`}
       >
-        관심사랑 맞는사람과 즐겁게 대화하세요
+        나랑 관심사가 맞는사람과 대화하세요
       </motion.div>
       <motion.div
         className={`mt-10 text-2xl text-gray-900 transition-opacity duration-500 ${scrolling ? 'opacity-100' : 'opacity-0'}`}
