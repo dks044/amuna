@@ -16,7 +16,9 @@ interface ProfileDrawerProps {
   onClose: () => void;
 
   //채팅방 참여한 유저들
-  data: FullConversationType;
+  data: Conversation & {
+    users: User[];
+  };
 
   currentUser: User;
 }
@@ -116,7 +118,7 @@ const ProfileDrawer = ({ isOpen, onClose, data, currentUser }: ProfileDrawerProp
                           </div>
                           <div className='w-full pt-5 pb-5 sm:px-0 sm:pt-0'>
                             <dl className='px-4 space-y-8 sm:space-y-6 sm:px-6'>
-                              {data.isGroup && (
+                              {/* {data.isGroup && (
                                 <div>
                                   <dt className='text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0'>
                                     Emails
@@ -125,7 +127,7 @@ const ProfileDrawer = ({ isOpen, onClose, data, currentUser }: ProfileDrawerProp
                                     {data.users.map(user => user.email).join(', ')}
                                   </dd>
                                 </div>
-                              )}
+                              )} */}
                               {!data.isGroup && (
                                 <div>
                                   <dt className='text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0'>

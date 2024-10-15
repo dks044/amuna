@@ -50,12 +50,12 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
 
   return (
     <React.Fragment>
-      {/* <ProfileDrawer
+      <ProfileDrawer
         currentUser={currentUser}
-        data={item!}
+        data={conversation}
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-      /> */}
+      />
       <div
         className='
         bg-white 

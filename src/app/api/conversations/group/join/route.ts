@@ -12,6 +12,20 @@ export async function POST(request: Request) {
       return new NextResponse('Unauthorized', { status: 400 });
     }
 
+    //이미 해당 오픈채팅방에 들어왔을경우
+    const existingConversations = await prisma.conversation.findUnique({
+      where: {
+        id: conversationId,
+        userIds: {
+          has: currentUser.id,
+        },
+        isGroup: true,
+      },
+    });
+    if (existingConversations) {
+      return new NextResponse('exist User', { status: 409 });
+    }
+
     // 채팅방에 사용자 추가
     const updatedConversation = await prisma.conversation.update({
       where: { id: conversationId },
@@ -49,6 +63,8 @@ export async function POST(request: Request) {
         pusherServer.trigger(user.email, 'conversation:update', updatedConversation);
       }
     });
+
+    pusherServer.trigger(currentUser.email, 'conversation:new', updatedConversation);
 
     // Pusher를 통해 클라이언트에 새로운 메시지 전송
     await pusherServer.trigger(conversationId, 'messages:new', enterMessage);

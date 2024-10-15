@@ -57,9 +57,9 @@ const OpenChatModal = ({ isOpen, onClose, currentUser }: OpenChatModalProps) => 
     try {
       await axios.post(`/api/conversations/group`, requestData);
       onClose();
-      router.push('/chatrooms');
+      router.push('/conversations');
     } catch (error) {
-      toast.error('에러가 발생했습니다.');
+      toast.error('이미 참여중인 방이에요.');
     } finally {
       setIsLoading(false);
     }

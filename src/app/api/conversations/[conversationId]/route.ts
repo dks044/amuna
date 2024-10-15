@@ -37,6 +37,7 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
 
     await Promise.all(deleteImagePromises);
 
+    //1대1 채팅방 상대방도 제거
     const deletedConversation = await prisma.conversation.deleteMany({
       where: {
         id: conversationId,
@@ -54,6 +55,6 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
 
     return NextResponse.json(deletedConversation);
   } catch (error) {
-    return NextResponse.json(null);
+    return new NextResponse('error', { status: 500 });
   }
 }

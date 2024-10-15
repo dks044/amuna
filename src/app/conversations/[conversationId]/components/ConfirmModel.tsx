@@ -24,15 +24,46 @@ const ConfirmModal = ({ isOpen, onClose, currentUser, data }: ConfirmModalProps)
   const onDelete = () => {
     setIsLoading(true);
 
-    axios
-      .delete(`/api/conversations/${conversationId}`)
-      .then(() => {
-        onClose();
-        router.push('/conversations');
-        router.refresh();
-      })
-      .catch(() => toast.error('에러가 발생했습니다.'))
-      .finally(() => setIsLoading(false));
+    if (!data) {
+      // 데이터가 없는 경우 처리
+      toast.error('데이터가 없습니다.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!data.isGroup) {
+      // 일반 채팅방 삭제
+      axios
+        .delete(`/api/conversations/${conversationId}`)
+        .then(() => {
+          onClose();
+          router.push('/conversations');
+          router.refresh();
+        })
+        .catch(() => toast.error('에러가 발생했습니다.'))
+        .finally(() => setIsLoading(false));
+    } else if (data.createdBy === currentUser.id) {
+      // 오픈채팅방을 만든 사람인 경우
+      axios
+        .delete(`/api/conversations/${conversationId}`)
+        .then(() => {
+          onClose();
+          router.push('/conversations');
+          router.refresh();
+        })
+        .catch(() => toast.error('에러가 발생했습니다.'))
+        .finally(() => setIsLoading(false));
+    } else {
+      // 오픈채팅방이지만 만든 사람이 아닌 경우
+      axios
+        .put(`/api/conversations/group/leave/${conversationId}`)
+        .then(() => {
+          onClose();
+          router.push('/conversations');
+        })
+        .catch(() => toast.error('에러가 발생했습니다.'))
+        .finally(() => setIsLoading(false));
+    }
   };
 
   return (
@@ -50,7 +81,7 @@ const ConfirmModal = ({ isOpen, onClose, currentUser, data }: ConfirmModalProps)
               {data?.createdBy === currentUser.id ? (
                 <>이 채팅방을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</>
               ) : (
-                <>채팅방 나가기(상대방도 나가져요!)</>
+                <>채팅방 나가기</>
               )}
             </p>
           </div>
@@ -58,7 +89,7 @@ const ConfirmModal = ({ isOpen, onClose, currentUser, data }: ConfirmModalProps)
       </div>
       <div className='mt-5 sm:mt-4 sm:flex sm:w-full'>
         <Button disbaled={isLoading} fullWidth danger onClick={onDelete}>
-          삭제
+          {data?.createdBy === currentUser.id ? <>삭제</> : <>나가기</>}
         </Button>
         <Button disbaled={isLoading} fullWidth secondary onClick={onClose}>
           취소
