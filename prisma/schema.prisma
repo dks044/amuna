@@ -94,6 +94,7 @@ model Message {
   body String?
   image String?
   chatroomEnter Boolean? //오픈채팅방 입장 유무
+  chatroomLeave Boolean? //오픈채팅방 탈출
   cretedAt DateTime @default(now())
 
   seenIds String[] @db.ObjectId

@@ -53,7 +53,7 @@ export async function PUT(request: Request, { params }: { params: Iparam }) {
         sender: {
           connect: { id: currentUser.id },
         },
-        chatroomEnter: true,
+        chatroomLeave: true,
       },
       include: {
         seen: true,
