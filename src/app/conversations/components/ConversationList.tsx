@@ -60,14 +60,23 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
       });
     };
 
+    const leaveHandler = (conversation: FullConversationType) => {
+      setItems(current => {
+        return current.filter(item => item.id !== conversation.id);
+      });
+    };
+
     pusherClient.bind('conversation:update', updateHandler);
     pusherClient.bind('conversation:new', newHandler);
     pusherClient.bind('conversation:remove', removeHandler);
+    pusherClient.bind('publicConversation:leave', leaveHandler);
+
     return () => {
       pusherClient.unsubscribe(pusherKey);
       pusherClient.unbind('conversation:update', updateHandler);
       pusherClient.unbind('conversation:new', newHandler);
       pusherClient.unbind('conversation:remove', removeHandler);
+      pusherClient.unbind('publicConversation:leave', leaveHandler);
     };
   }, [pusherKey]);
 

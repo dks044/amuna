@@ -63,6 +63,7 @@ export async function PUT(request: Request, { params }: { params: Iparam }) {
 
     await pusherServer.trigger(currentUser.email!, 'conversation:update', updatedConversation);
     await pusherServer.trigger(conversationId, 'messages:new', leaveMessage);
+    await pusherServer.trigger(currentUser.email!, 'publicConversation:leave', updatedConversation);
 
     return NextResponse.json(updatedConversation);
   } catch (error) {
