@@ -114,7 +114,7 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
 
     try {
       const response = await axios.post(`/api/cloudinary`, formData);
-      console.log(response.data);
+
       return response.data.uploadedImageData.secure_url;
     } catch (error) {
       console.log(error);

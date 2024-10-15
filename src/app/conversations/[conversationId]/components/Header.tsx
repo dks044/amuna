@@ -20,7 +20,6 @@ interface HeaderProps {
 }
 
 const Header = ({ conversation, currentUser }: HeaderProps) => {
-  console.log('conversation=>?', conversation.userIds.length);
   const [item, setItem] = useState<FullConversationType | null>(null);
   const otherUser = useOtherUser(conversation);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -39,7 +38,6 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
   useEffect(() => {
     pusherClient.subscribe(pusherKey!);
     const updateHandler = (updateConversation: FullConversationType) => {
-      console.log('ssibal,=> ', updateConversation);
       setItem(updateConversation);
     };
 

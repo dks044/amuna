@@ -19,7 +19,6 @@ interface ConfirmModalProps {
 }
 
 const EnterModal = ({ isOpen, onClose, conversation }: ConfirmModalProps) => {
-  console.log(conversation);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

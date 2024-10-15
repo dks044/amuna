@@ -17,7 +17,6 @@ const DeskTopItem = ({ label, href, icon: Icon, active, onClick }: DeskTopItemPr
       return onClick();
     }
   };
-  console.log('active=> ', active);
   return (
     <li onClick={handleClick}>
       <Link

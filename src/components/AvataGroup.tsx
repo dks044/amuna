@@ -9,9 +9,6 @@ interface AvatarGroupProps {
 }
 
 const AvatarGroup: React.FC<AvatarGroupProps> = ({ users = [], thumbnail }) => {
-  // thumbnail을 destructuring
-  console.log('thumbnail=>', thumbnail);
-
   const slicedUsers = users.slice(0, 3);
 
   const positionMap = {
