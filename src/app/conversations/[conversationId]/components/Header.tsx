@@ -13,12 +13,15 @@ import { pusherClient } from '@/libs/pusher';
 import { FullConversationType } from '@/types';
 
 interface HeaderProps {
-  conversation: FullConversationType;
+  conversation: Conversation & {
+    users: User[];
+  };
   currentUser: User;
 }
 
 const Header = ({ conversation, currentUser }: HeaderProps) => {
-  const [item, setItem] = useState<FullConversationType | null>(conversation);
+  console.log('conversation=>?', conversation.userIds.length);
+  const [item, setItem] = useState<FullConversationType | null>(null);
   const otherUser = useOtherUser(conversation);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -26,21 +29,21 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
   const isActive = members.indexOf(otherUser?.email!) !== -1;
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
-      return `${item?.users.length} members`;
+      return `${conversation.userIds.length} members`;
     }
 
     return isActive ? 'Active' : 'Offline';
-  }, [item, isActive]);
+  }, [conversation, isActive]);
 
   const pusherKey = currentUser.email;
   useEffect(() => {
     pusherClient.subscribe(pusherKey!);
-    const updateHandler = (conversation: FullConversationType) => {
-      console.log('New conversation received:', conversation);
-      setItem(conversation);
+    const updateHandler = (updateConversation: FullConversationType) => {
+      console.log('ssibal,=> ', updateConversation);
+      setItem(updateConversation);
     };
-    pusherClient.bind('conversation:update', updateHandler);
 
+    pusherClient.bind('conversation:update', updateHandler);
     return () => {
       pusherClient.unsubscribe(pusherKey!);
       pusherClient.unbind('conversation:update', updateHandler);
@@ -49,12 +52,12 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
 
   return (
     <React.Fragment>
-      <ProfileDrawer
+      {/* <ProfileDrawer
         currentUser={currentUser}
         data={item!}
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-      />
+      /> */}
       <div
         className='
         bg-white 
@@ -85,7 +88,15 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
           <div className='flex flex-col '>
             <div>{conversation.name || otherUser.name}</div>
             <div className='text-sm font-light text-neutral-500'>
-              {item?.isGroup ? <>{item?.users.length}&nbsp;members</> : <>{statusText}</>}
+              {item ? (
+                conversation.isGroup ? (
+                  <>{item.userIds.length}&nbsp;members</>
+                ) : (
+                  <>{statusText}</>
+                )
+              ) : (
+                <span>{statusText}</span>
+              )}
             </div>
           </div>
         </div>

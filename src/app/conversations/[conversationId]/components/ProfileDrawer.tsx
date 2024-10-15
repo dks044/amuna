@@ -38,7 +38,7 @@ const ProfileDrawer = ({ isOpen, onClose, data, currentUser }: ProfileDrawerProp
 
   const statusText = useMemo(() => {
     if (data.isGroup) {
-      return `${data.users.length} members`;
+      return `${data.userIds.length} members`;
     }
     return isActive ? '온라인' : '오프라인';
   }, [data, isActive]);
