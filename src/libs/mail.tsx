@@ -12,11 +12,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (formData: FormData) => {
+export const sendEmail = async (email: string, code: string) => {
   try {
-    const { email, code } = Object.fromEntries(formData);
-
-    // HTML 문자열 생성
     const htmlContent = `
       <div style="padding: 20px; font-family: Arial, sans-serif;">
         <div class="lime-gradient" style="padding: 20px; border-radius: 5px;">
@@ -31,7 +28,7 @@ export const sendEmail = async (formData: FormData) => {
 
     await transporter.sendMail({
       from: process.env.GMAIL_USER,
-      to: `${email}`,
+      to: email,
       subject: `[Amuna] 이메일 인증번호 입니다`,
       html: htmlContent,
     });
@@ -40,5 +37,6 @@ export const sendEmail = async (formData: FormData) => {
     return { message: '이메일 전송 성공' };
   } catch (error) {
     console.error(error);
+    throw new Error('이메일 전송 실패');
   }
 };

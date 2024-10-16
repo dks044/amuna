@@ -3,7 +3,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { redirect } from 'next/dist/server/api-utils';
 import toast from 'react-hot-toast';
 import Input from '@/components/inputs/Input';
@@ -31,7 +31,7 @@ const AuthForm = () => {
   const [skills, setSkills] = useState<TechStack[]>([]);
   //이메일 인증 관련
   const [mailCode, setMailCode] = useState('');
-  const [timer, setTimer] = useState(300); // 5분 = 300초
+  const [timer, setTimer] = useState(180); // 5분 = 300초
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [isSendLoading, setIsSendLoading] = useState(false);
 
@@ -60,12 +60,13 @@ const AuthForm = () => {
       email: '',
       password: '',
       gender: 'other',
+      code: '',
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = data => {
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
     setIsLoading(true);
-    const { name, email, password, gender } = data;
+    const { name, email, password, gender, code } = data;
 
     const userSkills = [...skills];
 
@@ -75,32 +76,47 @@ const AuthForm = () => {
         setIsLoading(false);
         return;
       }
-      axios
-        .post('/api/register', {
+
+      try {
+        // 이메일 인증 검증 요청
+        await axios.get(
+          `/api/auth/mailvalidate?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`,
+        );
+
+        // 인증 성공 후 회원가입 요청
+        await axios.post('/api/register', {
           name,
           email,
           password,
           gender,
           skills: userSkills,
-        })
-        .then(() => signIn('credentials', { email, password, redirect: false }))
-        .then(callback => {
-          if (callback?.error) {
-            toast.error('Invalid credentials!');
-          }
-          if (callback?.ok) {
-            toast.success('회원가입 성공! 잠시만 기다려주세요!');
-            router.push('/conversations');
-          }
-        })
-        .catch(error => {
-          if (error.response?.status === 400) {
-            toast.error('이미 사용 중인 이메일입니다.');
+          code,
+        });
+
+        const callback = await signIn('credentials', { email, password, redirect: false });
+        if (callback?.error) {
+          toast.error('Invalid credentials!');
+        }
+        if (callback?.ok) {
+          toast.success('회원가입 성공! 잠시만 기다려주세요!');
+          router.push('/conversations');
+        }
+      } catch (error) {
+        const axiosError = error as AxiosError;
+
+        if (axiosError.response) {
+          // 상태 코드가 400일 때
+          if (axiosError.response.status === 400) {
+            toast.error('인증코드 오류입니다, 메일을 확인해주세요.');
           } else {
             toast.error('에러가 발생했습니다.');
           }
-        })
-        .finally(() => setIsLoading(false));
+        } else {
+          toast.error('네트워크 오류가 발생했습니다.');
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     if (variant === 'LOGIN') {
@@ -186,11 +202,11 @@ const AuthForm = () => {
         code: generatedCode,
       })
       .then(() => toast('인증코드를 메일로 보냈어요.'))
-      .catch(() => toast.error('에러가 발생했어요.'))
+      .catch(() => toast.error('메일을 보낸지 3분이 지나지 않았거나, 전송 오류에요.'))
       .finally(() => {
         setIsSendLoading(false);
         setIsTimerActive(true);
-        setTimer(300);
+        setTimer(180);
       });
   };
 
