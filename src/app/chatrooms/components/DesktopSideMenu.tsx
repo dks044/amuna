@@ -7,12 +7,16 @@ import React, { useState } from 'react';
 import { BsGithub } from 'react-icons/bs';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 import { FaBook } from 'react-icons/fa';
+import FindPeoplesButton from '@/components/findPeoples/FindPeoplesButton';
+import FindPeoplesModal from '@/components/findPeoples/FindPeoplesModal';
 
 interface DesktopSideMenuProps {
   currentUser: User;
 }
 const DesktopSideMenu = ({ currentUser }: DesktopSideMenuProps) => {
-  const [isModealOpen, setIsModealOpen] = useState(false);
+  const [isModealOpen, setIsModealOpen] = useState(false); //오픈챗모달
+  const [isFindModal, setIsFindModal] = useState(false);
+
   return (
     <>
       <OpenChatModal
@@ -20,6 +24,7 @@ const DesktopSideMenu = ({ currentUser }: DesktopSideMenuProps) => {
         isOpen={isModealOpen}
         onClose={() => setIsModealOpen(false)}
       />
+      <FindPeoplesModal isOpen={isFindModal} onClose={() => setIsFindModal(false)} />
       <div
         className={`
       fixed
@@ -52,6 +57,10 @@ const DesktopSideMenu = ({ currentUser }: DesktopSideMenuProps) => {
             <IconButton icon={MdOutlineGroupAdd} />
           </div>
         </div>
+        <div className='mt-2 px-2'>
+          <FindPeoplesButton onClick={() => setIsFindModal(true)} />
+        </div>
+
         {/* 배너 */}
         <div
           className='absolute bottom-20 flex h-20 bg-[#03c75a] w-full justify-center transition hover:bg-[#16BD61] cursor-pointer'

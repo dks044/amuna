@@ -38,12 +38,12 @@ const Opening = () => {
         <RiScrollToBottomLine size={40} className='text-gray-900 animate-bounce' />
       </motion.div>
       <motion.div
-        className={`mt-10 text-2xl text-gray-900 transition-opacity duration-500 ${scrolling ? 'opacity-100' : 'opacity-0'}`}
+        className={`mt-48 text-2xl text-gray-900 transition-opacity duration-500 ${scrolling ? 'opacity-100' : 'opacity-0'}`}
       >
         나랑 관심사가 맞는사람과 대화하세요
       </motion.div>
       <motion.div
-        className={`mt-10 text-2xl text-gray-900 transition-opacity duration-500 ${scrolling ? 'opacity-100' : 'opacity-0'}`}
+        className={`mt-24 text-2xl text-gray-900 transition-opacity duration-500 ${scrolling ? 'opacity-100' : 'opacity-0'}`}
       >
         그럼 즐겨주세요!
       </motion.div>
