@@ -12,28 +12,48 @@ import { FiAlertTriangle } from 'react-icons/fi';
 import { FaCirclePlay } from 'react-icons/fa6';
 import LoadingModal from '@/components/modals/LoadingModal';
 import { error } from 'console';
+
 interface ConfirmModalProps {
-  conversation: Conversation;
+  conversation?: Conversation;
   isOpen?: boolean;
   onClose: () => void;
+  isPublic: boolean;
+  user?: User;
 }
 
-const EnterModal = ({ isOpen, onClose, conversation }: ConfirmModalProps) => {
+const EnterModal = ({ isOpen, onClose, conversation, isPublic, user }: ConfirmModalProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => {
     setIsLoading(true);
-    axios
-      .post(`/api/conversations/group/join`, { conversationId: conversation.id })
-      .then(() => {
-        router.push(`/conversations/${conversation.id}`);
-      })
-      .catch(error => {
-        console.log(error);
-        toast.error('에러가 발생했습니다.');
-      })
-      .finally(() => setIsLoading(false));
+    if (isPublic) {
+      if (conversation) {
+        axios
+          .post(`/api/conversations/group/join`, { conversationId: conversation.id })
+          .then(() => {
+            router.push(`/conversations/${conversation.id}`);
+          })
+          .catch(error => {
+            console.log(error);
+            toast.error('에러가 발생했습니다.');
+          })
+          .finally(() => setIsLoading(false));
+      }
+    } else {
+      if (user) {
+        axios
+          .post('api/conversations', { userId: user.id })
+          .then(response => {
+            router.push(`/conversations/${response.data.id}`);
+          })
+          .catch(error => {
+            toast.error('에러가 발생했습니다!');
+            console.log(error);
+          })
+          .finally(() => setIsLoading(false));
+      }
+    }
   };
 
   return (
@@ -46,11 +66,13 @@ const EnterModal = ({ isOpen, onClose, conversation }: ConfirmModalProps) => {
           </div>
           <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
             <DialogTitle as='h3' className='text-base font-semibold leading-6 text-gray-900'>
-              관심사 채팅방 참여
+              {conversation && <>관심사 채팅방 참여</>}
+              {user && <>대화하기</>}
             </DialogTitle>
             <div className='mt-2'>
               <p className='text-sm text-gray-500'>
-                '{conversation?.name}'&nbsp;에 입장하시겠습니까?
+                {conversation && <>{conversation.name} &nbsp;에 입장하시겠습니까?</>}
+                {user && <>{user.name} &nbsp;님이랑 대화하시겠습니까?</>}
               </p>
             </div>
           </div>

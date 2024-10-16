@@ -72,6 +72,7 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         conversation={selectedConversation!}
+        isPublic
       />
       <div
         className={`
