@@ -15,6 +15,7 @@ import toast from 'react-hot-toast';
 import useUserStore from '@/store/useUserStore';
 import { User } from '@prisma/client';
 import LoadingModal from '../modals/LoadingModal';
+import qs from 'querystring';
 
 interface FindPeoplesModalProps {
   isOpen: boolean;
@@ -46,16 +47,21 @@ const FindPeoplesModal = ({ isOpen, onClose }: FindPeoplesModalProps) => {
 
   const onSubmit = async () => {
     setIsLoading(true);
-    const requestData = {
-      tags: skills,
-    };
+
+    const tags = skills;
+    console.log('tags=>', tags);
     try {
-      const response = await axios.get<User[]>('/api/user', { params: requestData });
+      const response = await axios.get<User[]>('/api/user', {
+        params: { tags },
+        paramsSerializer: params => {
+          return qs.stringify(params);
+        },
+      });
       if (response.data.length === 0) {
         toast('관심사랑 같은 사람을 찾지 못했어요.');
       } else {
         toast('관심사랑 비슷한 사람을 찾았어요.');
-        clearUsers();
+        clearUsers(); //초기화
         response.data.forEach(user => {
           addUser(user);
         });

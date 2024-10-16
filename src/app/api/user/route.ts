@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const tags = url.searchParams.getAll('tags');
+    console.log('tags=>', tags); // 디버깅 용도
 
     const currentUser = await getCurrentUser();
     if (!currentUser?.email || !currentUser?.id) {
@@ -18,7 +19,7 @@ export async function GET(request: Request) {
           id: currentUser.id,
         },
         tags: {
-          hasEvery: tags,
+          hasSome: tags,
         },
       },
     });
