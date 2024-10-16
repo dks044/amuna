@@ -36,7 +36,7 @@ const EnterModal = ({ isOpen, onClose, conversation, isPublic, user }: ConfirmMo
           })
           .catch(error => {
             console.log(error);
-            toast.error('에러가 발생했습니다.');
+            toast.error('이미 참여중인 채팅방이에요.');
           })
           .finally(() => setIsLoading(false));
       }

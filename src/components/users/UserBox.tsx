@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import Avatar from '../Avatar';
 import { useRouter } from 'next/navigation';
 import EnterModal from '@/app/chatrooms/components/EnterModal';
+import UserProfileModal from './UserProfileModal';
 
 interface UserBoxProps {
   data: User;
@@ -16,24 +17,24 @@ interface UserBoxProps {
 const UserBox = ({ data }: UserBoxProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEnterModalOpen, setIsEnterModalOpen] = useState(false);
 
   const introduceText =
     data.introduce && data.introduce.length > 12
-      ? `${data.introduce.slice(0, 15)}...`
+      ? `${data.introduce.slice(0, 17)}...`
       : data.introduce || '소개글이 없는 사용자에요.';
 
   return (
     <>
       <EnterModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isEnterModalOpen}
+        onClose={() => setIsEnterModalOpen(false)}
         isPublic={false}
         user={data}
       />
       {isLoading && <LoadingModal show={isLoading} />}
       <div
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsEnterModalOpen(true)}
         className={clsx(
           `
           w-full

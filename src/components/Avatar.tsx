@@ -1,16 +1,29 @@
 import { User } from '@prisma/client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
+import UserProfileModal from './users/UserProfileModal';
 
 interface AvataProps {
   user?: User;
 }
 
 const Avatar = ({ user }: AvataProps) => {
+  const [isProfileModal, setIsProfileModal] = useState(false);
+  const handleClick = (e: any) => {
+    e.stopPropagation();
+    setIsProfileModal(true);
+  };
+
   return (
-    <div className='relative'>
-      <div
-        className={`
+    <>
+      <UserProfileModal
+        isOpen={isProfileModal}
+        onClose={() => setIsProfileModal(false)}
+        user={user!}
+      />
+      <div className='relative' onClick={e => handleClick(e)}>
+        <div
+          className={`
           relative
           inline-block
           rounded-full
@@ -19,14 +32,14 @@ const Avatar = ({ user }: AvataProps) => {
           w-9
           md:h-11
           md:w-11
-          
+          cursor-pointer
         `}
-      >
-        <Image fill src={user?.image || '/images/placeholder.jpg'} alt='Avata' />
-      </div>
+        >
+          <Image fill src={user?.image || '/images/placeholder.jpg'} alt='Avata' />
+        </div>
 
-      <span
-        className={`
+        <span
+          className={`
           absolute
           block
           rounded-full
@@ -40,8 +53,9 @@ const Avatar = ({ user }: AvataProps) => {
           md-h-3
           md-w-3
           `}
-      />
-    </div>
+        />
+      </div>
+    </>
   );
 };
 
