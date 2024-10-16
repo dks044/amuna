@@ -11,6 +11,7 @@ interface InputProps {
   errors: FieldErrors;
   disabled?: boolean;
   defaultValue?: string;
+  placeholder?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,6 +23,7 @@ const Input: React.FC<InputProps> = ({
   type = 'text',
   disabled,
   defaultValue,
+  placeholder,
 }) => {
   return (
     <div>
@@ -37,6 +39,7 @@ const Input: React.FC<InputProps> = ({
           autoComplete={id}
           defaultValue={defaultValue}
           disabled={disabled}
+          placeholder={placeholder}
           {...register(id, { required })}
           className={clsx(
             `
@@ -55,7 +58,7 @@ const Input: React.FC<InputProps> = ({
             placeholder:text-gray-400 
             focus:ring-2 
             focus:ring-inset 
-            focus:ring-orange-600 
+            focus:ring-lime-500
             sm:text-sm 
             sm:leading-6`,
             errors[id] && 'focus:ring-rose-500',

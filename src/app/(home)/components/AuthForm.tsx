@@ -17,6 +17,8 @@ import SearchSkillBar from '@/components/SearchSkillBar';
 import SkillIcon from '@/components/SkillIcon';
 import { TiDelete } from 'react-icons/ti';
 import clsx from 'clsx';
+import { ClipLoader } from 'react-spinners';
+import generateRandomCode from '@/app/utils/randomCode';
 
 type Variant = 'LOGIN' | 'REGISTER';
 type Gender = 'MAN' | 'WOMEN' | 'OTHER';
@@ -27,6 +29,11 @@ const AuthForm = () => {
   const [variant, setVariant] = useState<Variant>('LOGIN');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [skills, setSkills] = useState<TechStack[]>([]);
+  //이메일 인증 관련
+  const [mailCode, setMailCode] = useState('');
+  const [timer, setTimer] = useState(300); // 5분 = 300초
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [isSendLoading, setIsSendLoading] = useState(false);
 
   useEffect(() => {
     if (session?.status === 'authenticated') {
@@ -46,6 +53,7 @@ const AuthForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm<FieldValues>({
     defaultValues: {
       name: '',
@@ -146,6 +154,52 @@ const AuthForm = () => {
     });
   };
 
+  // 이메일 인증 관련
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isTimerActive && timer > 0) {
+      setMailCode(generateRandomCode());
+      interval = setInterval(() => {
+        setTimer(prev => prev - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      setMailCode('');
+      setIsTimerActive(false);
+    }
+    return () => clearInterval(interval);
+  }, [isTimerActive, timer]);
+
+  const onClickForEmailCode = () => {
+    setIsSendLoading(true);
+    const generatedCode = generateRandomCode();
+    setMailCode(generatedCode);
+
+    const email = getValues('email');
+    if (email === '' || !email) {
+      toast.error('이메일을 적어주세요.');
+      setIsSendLoading(false);
+      return;
+    }
+    axios
+      .post('/api/sendmail', {
+        email: email,
+        code: generatedCode,
+      })
+      .then(() => toast('인증코드를 메일로 보냈어요.'))
+      .catch(() => toast.error('에러가 발생했어요.'))
+      .finally(() => {
+        setIsSendLoading(false);
+        setIsTimerActive(true);
+        setTimer(300);
+      });
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
   return (
     <div className=' mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
       <div className='border-0 ring-1 ring-inset ring-gray-300 px-4 py-4 bg-white shadow-lg sm:rounded-lg sm:px-10'>
@@ -170,8 +224,32 @@ const AuthForm = () => {
             required
             id='email'
             label='이메일'
-            type='email'
           />
+          {/* 이메일인증 회원가입 기능 부분 */}
+          {variant === 'REGISTER' && (
+            <div className='mt-0'>
+              <Button fullWidth onClick={onClickForEmailCode}>
+                {isSendLoading ? (
+                  <ClipLoader color='white' size={30} />
+                ) : (
+                  <>이메일 인증코드 보내기</>
+                )}
+              </Button>
+              <div className='relative'>
+                <Input
+                  disabled={isLoading}
+                  register={register}
+                  errors={errors}
+                  required
+                  placeholder='이메일 인증코드 입력'
+                  id='code'
+                />
+                <div className='absolute bottom-0 right-1 text-gray-300'>
+                  남은시간 {formatTime(timer)}
+                </div>
+              </div>
+            </div>
+          )}
           <Input
             disabled={isLoading}
             register={register}

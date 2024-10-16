@@ -48,8 +48,8 @@ const Select: React.FC<SelectProps> = ({
           shadow-sm 
           focus:outline-none 
           focus:ring-2 
-          focus:ring-orange-500 
-          focus:border-orange-500 
+          focus:ring-lime-500 
+          focus:border-lime-500 
           disabled:opacity-50 
           disabled:cursor-not-allowed 
           p-2

@@ -6,6 +6,10 @@ export type AuthFormValues = {
   tags?: TechStack[];
 };
 
+export type EmailCodeValues = {
+  email: string;
+};
+
 export type TechStack =
   | 'Java'
   | 'Spring Boot'
