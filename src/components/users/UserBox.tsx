@@ -15,13 +15,14 @@ interface UserBoxProps {
 const UserBox = ({ data }: UserBoxProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
   const handleClick = () => {
     setIsLoading(true);
 
     axios
       .post('api/conversations', { userId: data.id })
-      .then(data => {
-        router.push(`/conversations/${data.data.id}`); //conversationId
+      .then(response => {
+        router.push(`/conversations/${response.data.id}`); // conversationId
       })
       .catch(error => {
         toast.error('에러가 발생했습니다!');
@@ -29,6 +30,11 @@ const UserBox = ({ data }: UserBoxProps) => {
       })
       .finally(() => setIsLoading(false));
   };
+
+  const introduceText =
+    data.introduce && data.introduce.length > 12
+      ? `${data.introduce.slice(0, 15)}...`
+      : data.introduce || '소개글이 없는 사용자에요.';
 
   return (
     <>
@@ -50,12 +56,13 @@ const UserBox = ({ data }: UserBoxProps) => {
         `,
         )}
       >
-        <Avatar />
+        <Avatar user={data} />
         <div className='min-w-0 flex-1'>
           <div className='focus:outline-none'>
-            <div className='flex justify-between items-center mb-1'>
+            <div className='flex flex-col justify-between items-center mb-1 truncate'>
               {/* userName */}
               <p className='text-sm font-medium text-gray-900'>{data.name}</p>
+              <p className='text-sm font-medium text-gray-400'>{introduceText}</p>
             </div>
           </div>
         </div>

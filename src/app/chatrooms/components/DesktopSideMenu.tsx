@@ -9,6 +9,8 @@ import { MdOutlineGroupAdd } from 'react-icons/md';
 import { FaBook } from 'react-icons/fa';
 import FindPeoplesButton from '@/components/findPeoples/FindPeoplesButton';
 import FindPeoplesModal from '@/components/findPeoples/FindPeoplesModal';
+import useUserStore from '@/store/useUserStore';
+import UserBox from '@/components/users/UserBox';
 
 interface DesktopSideMenuProps {
   currentUser: User;
@@ -16,7 +18,7 @@ interface DesktopSideMenuProps {
 const DesktopSideMenu = ({ currentUser }: DesktopSideMenuProps) => {
   const [isModealOpen, setIsModealOpen] = useState(false); //오픈챗모달
   const [isFindModal, setIsFindModal] = useState(false);
-
+  const { users } = useUserStore();
   return (
     <>
       <OpenChatModal
@@ -60,7 +62,11 @@ const DesktopSideMenu = ({ currentUser }: DesktopSideMenuProps) => {
         <div className='mt-2 px-2'>
           <FindPeoplesButton onClick={() => setIsFindModal(true)} />
         </div>
-
+        <div className='mt-2 px-2 overflow-y-auto' style={{ maxHeight: 'calc(100% - 160px)' }}>
+          {users.map(user => (
+            <UserBox data={user} key={user.id} />
+          ))}
+        </div>
         {/* 배너 */}
         <div
           className='absolute bottom-20 flex h-20 bg-[#03c75a] w-full justify-center transition hover:bg-[#16BD61] cursor-pointer'

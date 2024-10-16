@@ -1,11 +1,12 @@
 import getCurrentUser from '@/app/actions/getCurrentUser';
-import prisma from '@/libs/prismadb';
 import { NextResponse } from 'next/server';
+import prisma from '@/libs/prismadb';
 
 export async function GET(request: Request) {
   try {
-    const body = await request.json();
-    const { tags } = body;
+    const url = new URL(request.url);
+    const tags = url.searchParams.getAll('tags');
+
     const currentUser = await getCurrentUser();
     if (!currentUser?.email || !currentUser?.id) {
       return new NextResponse('Unauthorized!', { status: 500 });
@@ -17,12 +18,13 @@ export async function GET(request: Request) {
           id: currentUser.id,
         },
         tags: {
-          hasSome: tags,
+          hasEvery: tags,
         },
       },
     });
     return NextResponse.json(findUsers);
   } catch (error) {
-    return [];
+    console.error(error);
+    return new NextResponse('Internal Error', { status: 500 });
   }
 }

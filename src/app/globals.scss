@@ -7,6 +7,20 @@ body {
   height: 100%;
   margin: 0;
 }
+//스크롤
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #84cc16;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
 
 $grid-background: repeating-linear-gradient(
     0deg,

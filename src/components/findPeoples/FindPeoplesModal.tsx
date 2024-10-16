@@ -24,7 +24,7 @@ interface FindPeoplesModalProps {
 const FindPeoplesModal = ({ isOpen, onClose }: FindPeoplesModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [skills, setSkills] = useState<TechStack[]>([]);
-  const { addUser } = useUserStore();
+  const { addUser, clearUsers } = useUserStore();
 
   const onClickToSetSkills = (skill: TechStack) => {
     setSkills(prevSkills => (prevSkills.includes(skill) ? prevSkills : [...prevSkills, skill]));
@@ -55,6 +55,7 @@ const FindPeoplesModal = ({ isOpen, onClose }: FindPeoplesModalProps) => {
         toast('관심사랑 같은 사람을 찾지 못했어요.');
       } else {
         toast('관심사랑 비슷한 사람을 찾았어요.');
+        clearUsers();
         response.data.forEach(user => {
           addUser(user);
         });
