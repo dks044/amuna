@@ -33,11 +33,11 @@ const MobileUI = ({ currentUser, publicConversations }: MoblieUIInterface) => {
     null,
   );
   const [isModealOpen, setIsModealOpen] = useState(false); //오픈챗모달
-  const [isFindModal, setIsFindModal] = useState(false);
+  const [isFindModal, setIsFindModal] = useState(false); //유저찾기모달
   const [keyword, setKeyword] = useState<string>('');
   const [skills, setSkills] = useState<TechStack[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFindUserModal, setIsFindUserModal] = useState(false);
+  const [isFindUserModal, setIsFindUserModal] = useState(false); //유저찾은모달
   const { users } = useUserStore();
 
   const onClickToSetSkills = (skill: TechStack) => {
@@ -58,7 +58,7 @@ const MobileUI = ({ currentUser, publicConversations }: MoblieUIInterface) => {
 
   useEffect(() => {
     pusherClient.subscribe('all');
-
+    setIsFindUserModal(false);
     const newHandler = (conversation: FullConversationType) => {
       setItems(current => {
         if (find(current, { id: conversation.id })) {
@@ -175,7 +175,7 @@ const MobileUI = ({ currentUser, publicConversations }: MoblieUIInterface) => {
             ))}
           </div>
         </div>
-        <div className='flex gap-1 mt-1 flex-wrap px-5 overflow-y-auto'>
+        <div className='flex gap-1 mt-1 flex-wrap px-5 overflow-y-auto justify-center h-72'>
           {filteredItems.map(item => (
             <div key={item.id} onClick={() => handleOpenModal(item)}>
               <MobileChatroomCard data={item} />

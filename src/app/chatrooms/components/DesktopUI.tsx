@@ -112,7 +112,7 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
       pl-80
       `}
       >
-        <div className='flex flex-col w-full justify-center items-center'>
+        <div className='flex flex-1 flex-col w-full justify-center items-center'>
           <div
             className='border-0 ring-1 ring-inset ring-gray-300 mt-3 text-3xl font-bold tracking-tight text-center shadow-lg py-4 px-4 w-max bg-white sm:rounded-lg text-gray-900
           dd'
@@ -148,7 +148,7 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
             </div>
           </div>
         </div>
-        <div className='flex gap-3 mt-5 flex-wrap px-5'>
+        <div className='flex gap-3 mt-5 flex-wrap px-5 justify-center overflow-y-auto h-80'>
           {filteredItems.map(item => (
             <div key={item.id} onClick={() => handleOpenModal(item)}>
               <ChatroomCard data={item} />

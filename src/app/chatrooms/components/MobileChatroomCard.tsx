@@ -10,7 +10,7 @@ interface MobileChatroomCardProps {
 const MobileChatroomCard = ({ data }: MobileChatroomCardProps) => {
   return (
     <div
-      className='flex flex-col w-28 rounded-md shadow-md bg-white transiton hover:scale-105 hover:bg-opacity-85
+      className='flex flex-col w-28 rounded-md shadow-md bg-gray-100 transiton hover:bg-gray-200
     justify-center items-center py-2 px-2
     ring-1 ring-inset ring-gray-300 transition
     '
