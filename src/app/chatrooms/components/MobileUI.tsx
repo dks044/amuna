@@ -175,7 +175,7 @@ const MobileUI = ({ currentUser, publicConversations }: MoblieUIInterface) => {
             ))}
           </div>
         </div>
-        <div className='flex gap-1 mt-1 flex-wrap px-5 overflow-y-auto justify-center h-72'>
+        <div className='flex gap-2 mt-1 flex-wrap px-5 overflow-y-auto justify-center h-72'>
           {filteredItems.map(item => (
             <div key={item.id} onClick={() => handleOpenModal(item)}>
               <MobileChatroomCard data={item} />

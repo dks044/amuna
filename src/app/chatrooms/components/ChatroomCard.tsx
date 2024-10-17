@@ -29,7 +29,7 @@ const ChatroomCard = ({ data }: ChatroomCardInterface) => {
           <div className='text-gray-300 text-sm'>{data.users.length}명 참여중</div>
         </div>
       </div>
-      <div className='relative flex flex-wrap mt-2 h-full'>
+      <div className='relative flex flex-wrap mt-2 h-full gap-2'>
         {chatRoomTag.length === 0 ? (
           <div className='font-notosans text-sm text-gray-300 underline'>태그가 없는방이에요.</div>
         ) : (
