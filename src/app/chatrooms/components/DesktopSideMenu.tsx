@@ -11,6 +11,7 @@ import FindPeoplesButton from '@/components/findPeoples/FindPeoplesButton';
 import FindPeoplesModal from '@/components/findPeoples/FindPeoplesModal';
 import useUserStore from '@/store/useUserStore';
 import UserBox from '@/components/users/UserBox';
+import MobileNavigation from './MobileNavigation';
 
 interface DesktopSideMenuProps {
   currentUser: User;
@@ -27,6 +28,7 @@ const DesktopSideMenu = ({ currentUser }: DesktopSideMenuProps) => {
         onClose={() => setIsModealOpen(false)}
       />
       <FindPeoplesModal isOpen={isFindModal} onClose={() => setIsFindModal(false)} />
+      <MobileNavigation user={currentUser} />
       <div
         className={`
       fixed

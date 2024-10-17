@@ -2,9 +2,10 @@ import React from 'react';
 
 interface SkillIconProps {
   skill: string;
+  notLabel?: boolean;
 }
 
-const SkillIcon: React.FC<SkillIconProps> = ({ skill }) => {
+const SkillIcon: React.FC<SkillIconProps> = ({ skill, notLabel }) => {
   const iconMap: { [key: string]: string } = {
     'android studio': 'androidstudio.png',
     'express.js': 'expressjs.png',
@@ -34,7 +35,7 @@ const SkillIcon: React.FC<SkillIconProps> = ({ skill }) => {
   return (
     <span className='flex items-center space-x-1'>
       <img src={`/images/skills/${iconName}`} alt={skill} className='w-4 h-4' />
-      <span>{skill}</span>
+      {notLabel ? null : <span>{skill}</span>}
     </span>
   );
 };

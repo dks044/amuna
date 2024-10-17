@@ -6,16 +6,18 @@ import clsx from 'clsx';
 interface SearchBarProps {
   value: string;
   onChange: (e: any) => void;
+  fullWidth?: boolean;
 }
 
-const SearchBar = ({ value, onChange }: SearchBarProps) => {
+const SearchBar = ({ value, onChange, fullWidth }: SearchBarProps) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
   return (
     <div
       className={clsx(
-        `border-0 ring-1 ring-inset ring-gray-300 flex items-center w-full h-full shadow-lg rounded-lg px-3 py-1`,
+        `border-0 ring-1 ring-inset ring-gray-300 flex items-center h-full shadow-lg rounded-lg px-3 py-1`,
         isFocus ? 'bg-gray-100' : 'bg-white',
+        fullWidth && 'w-full',
       )}
       onFocus={() => setIsFocus(true)}
       onBlur={() => setIsFocus(false)}

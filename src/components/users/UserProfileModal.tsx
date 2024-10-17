@@ -5,6 +5,7 @@ import Modal from '../modals/Modal';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import SkillIcon from '../SkillIcon';
+import Button from '../Button';
 
 interface UserProfileModalProps {
   isOpen: boolean;
@@ -54,6 +55,11 @@ const UserProfileModal = ({ isOpen, onClose, user }: UserProfileModalProps) => {
           <p className='text-sm text-gray-500 font-notosans'>
             {format(new Date(user.createdAt), 'PP')}
           </p>
+        </div>
+        <div className='flex items-center justify-end mt-6 gap-x-6'>
+          <Button secondary onClick={onClose}>
+            확인
+          </Button>
         </div>
       </div>
     </Modal>

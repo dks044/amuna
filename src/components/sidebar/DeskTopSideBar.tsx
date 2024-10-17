@@ -81,7 +81,7 @@ const DesktopSidebar: React.FC<DeskTopSideBarProps> = ({ currentUser }) => {
             `}
             onClick={() => setIsOpen(true)}
           >
-            <Avatar user={currentUser} />
+            <Avatar user={currentUser} settingModal />
           </div>
         </nav>
       </div>

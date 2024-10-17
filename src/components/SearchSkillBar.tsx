@@ -30,9 +30,17 @@ interface SearchSkillBarProps {
   label?: string;
   onClickSkillItem: (skill: TechStack) => void;
   shadow?: boolean;
+  fullWidth?: boolean;
+  isMobile?: boolean;
 }
 
-const SearchSkillBar = ({ label, onClickSkillItem, shadow }: SearchSkillBarProps) => {
+const SearchSkillBar = ({
+  label,
+  onClickSkillItem,
+  shadow,
+  fullWidth,
+  isMobile,
+}: SearchSkillBarProps) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredStacks, setFilteredStacks] = useState<TechStack[]>(techStacks);
@@ -54,7 +62,7 @@ const SearchSkillBar = ({ label, onClickSkillItem, shadow }: SearchSkillBarProps
 
   return (
     <div
-      className={clsx(` relative w-full max-w-md rounded-lg`, shadow && 'shadow-lg')}
+      className={clsx(`max-w-md rounded-lg`, shadow && 'shadow-lg', fullWidth && 'w-full')}
       onFocus={() => setIsFocus(true)}
       onBlur={() => setIsFocus(false)}
     >
@@ -81,8 +89,14 @@ const SearchSkillBar = ({ label, onClickSkillItem, shadow }: SearchSkillBarProps
           )}
         />
       </div>
+
       {filteredStacks.length > 0 && (
-        <ul className='absolute z-10 w-full bg-white shadow-lg rounded-lg mt-1 max-h-40 overflow-y-auto'>
+        <ul
+          className={clsx(
+            `relative  bg-white shadow-lg rounded-lg mt-1 max-h-40 overflow-y-auto transition`,
+            //isMobile ? 'max-w-full' : 'w-full',
+          )}
+        >
           {filteredStacks.map((stack: TechStack) => (
             <li
               key={stack}

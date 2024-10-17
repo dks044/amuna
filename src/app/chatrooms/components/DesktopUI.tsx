@@ -22,6 +22,7 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [items, setItems] = useState(publicConversations);
+  const [filteredItems, setFilteredItems] = useState<FullConversationType[]>(publicConversations);
   const [keyword, setKeyword] = useState<string>('');
   const [skills, setSkills] = useState<TechStack[]>([]);
 
@@ -66,6 +67,31 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
     setIsModalOpen(true); // 모달 열기
   };
 
+  useEffect(() => {
+    // 필터링 로직
+    const filterItems = () => {
+      let newFilteredItems = items;
+
+      // 키워드로 필터링
+      if (keyword) {
+        newFilteredItems = newFilteredItems.filter(item =>
+          item.name!.toLowerCase().includes(keyword.toLowerCase()),
+        );
+      }
+
+      // 기술로 필터링
+      if (skills.length > 0) {
+        newFilteredItems = newFilteredItems.filter(item =>
+          skills.some(skill => item.tag.includes(skill)),
+        );
+      }
+
+      setFilteredItems(newFilteredItems);
+    };
+
+    filterItems();
+  }, [items, keyword, skills]);
+
   return (
     <>
       <EnterModal
@@ -96,12 +122,12 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
         </div>
         <div className='w-full flex justify-center items-center'>
           <div className='w-full max-w-md mt-4'>
-            <SearchBar onChange={setKeyword} value={keyword} />
+            <SearchBar fullWidth onChange={setKeyword} value={keyword} />
           </div>
         </div>
         <div className='w-full flex justify-center items-center'>
           <div className='flex w-full max-w-md mt-4 flex-col'>
-            <SearchSkillBar shadow={true} onClickSkillItem={onClickToSetSkills} />
+            <SearchSkillBar fullWidth shadow={true} onClickSkillItem={onClickToSetSkills} />
             <div className='flex flex-wrap space-x-3'>
               {Array.from(skills).map(skill => (
                 <div className='flex items-center mt-2' key={skill}>
@@ -123,7 +149,7 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
           </div>
         </div>
         <div className='flex gap-3 mt-5 flex-wrap px-5'>
-          {items.map(item => (
+          {filteredItems.map(item => (
             <div key={item.id} onClick={() => handleOpenModal(item)}>
               <ChatroomCard data={item} />
             </div>

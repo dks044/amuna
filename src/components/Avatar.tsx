@@ -2,14 +2,22 @@ import { User } from '@prisma/client';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import UserProfileModal from './users/UserProfileModal';
+import { FaTools } from 'react-icons/fa';
+import clsx from 'clsx';
 
 interface AvataProps {
   user?: User;
+  notVisibleActive?: boolean;
+  settingModal?: boolean;
+  isMobile?: boolean;
 }
 
-const Avatar = ({ user }: AvataProps) => {
+const Avatar = ({ user, notVisibleActive, settingModal, isMobile }: AvataProps) => {
   const [isProfileModal, setIsProfileModal] = useState(false);
   const handleClick = (e: any) => {
+    if (settingModal) {
+      return;
+    }
     e.stopPropagation();
     setIsProfileModal(true);
   };
@@ -23,7 +31,8 @@ const Avatar = ({ user }: AvataProps) => {
       />
       <div className='relative' onClick={e => handleClick(e)}>
         <div
-          className={`
+          className={clsx(
+            `
           relative
           inline-block
           rounded-full
@@ -33,13 +42,36 @@ const Avatar = ({ user }: AvataProps) => {
           md:h-11
           md:w-11
           cursor-pointer
-        `}
+        `,
+            isMobile && 'transform hover:scale-110',
+          )}
         >
           <Image fill src={user?.image || '/images/placeholder.jpg'} alt='Avata' />
         </div>
-
-        <span
-          className={`
+        {notVisibleActive ? (
+          <span
+            className={`
+                  absolute
+                  block
+                  rounded-full
+                  bg-transparent
+                  ring-2
+                  ring-white
+                  top-0
+                  right-3
+                  h-2 
+                  w-2
+                  md-h-3
+                  md-w-3
+                  transform
+                  hover:scale-110
+                  `}
+          >
+            <FaTools className='text-lime-500' />
+          </span>
+        ) : (
+          <span
+            className={`
           absolute
           block
           rounded-full
@@ -53,7 +85,8 @@ const Avatar = ({ user }: AvataProps) => {
           md-h-3
           md-w-3
           `}
-        />
+          />
+        )}
       </div>
     </>
   );
