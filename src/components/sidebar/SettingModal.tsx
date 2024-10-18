@@ -223,6 +223,16 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
                   </div>
                 </div>
               </div>
+              <div className='mt-4'>
+                {/* TODO: Oauth 일경우 해당 버튼 없애기 */}
+                <Button fullWidth>비밀번호 변경</Button>
+              </div>
+              <div className='mt-2'>
+                {/* TODO: Oauth 일경우 해당 버튼 없애기 */}
+                <Button danger fullWidth>
+                  회원 탈퇴
+                </Button>
+              </div>
             </div>
           </div>
 

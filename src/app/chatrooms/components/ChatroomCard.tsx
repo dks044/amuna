@@ -15,7 +15,7 @@ const ChatroomCard = ({ data }: ChatroomCardInterface) => {
   const chatRoomTag = data.tag as TechStack[];
 
   return (
-    <div className='flex flex-col ring-1 ring-inset ring-gray-300 p-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow cursor-pointer'>
+    <div className='flex flex-col ring-1 ring-inset ring-gray-300 p-4 border rounded-lg shadow-md bg-gray-100 hover:shadow-lg transition-shadow cursor-pointer'>
       <div className='flex items-center mb-2'>
         {data.image ? (
           <img src={data.image} alt='Chat Thumbnail' className='w-16 h-16 rounded-full mr-3' />
