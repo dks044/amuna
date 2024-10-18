@@ -231,6 +231,7 @@ const AuthForm = () => {
               required
               id='name'
               label='이름'
+              placeholder='이름 입력'
             />
           )}
           <Input
@@ -240,6 +241,7 @@ const AuthForm = () => {
             required
             id='email'
             label='이메일'
+            placeholder='이메일 입력'
           />
           {/* 이메일인증 회원가입 기능 부분 */}
           {variant === 'REGISTER' && (
@@ -274,6 +276,7 @@ const AuthForm = () => {
             id='password'
             label='비밀번호'
             type='password'
+            placeholder='비밀번호 입력'
           />
           {variant === 'REGISTER' && (
             <React.Fragment>

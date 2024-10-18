@@ -53,12 +53,19 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
         return [conversation, ...current];
       });
     };
+    const removeHandler = (conversation: FullConversationType) => {
+      setItems(current => {
+        return [...current.filter(item => item.id !== conversation.id)];
+      });
+    };
 
     pusherClient.bind('open_conversation:new', newHandler);
+    pusherClient.bind('open_conversation:remove', removeHandler);
 
     return () => {
       pusherClient.unsubscribe('all');
       pusherClient.unbind('open_conversation:new', newHandler);
+      pusherClient.unbind('open_conversation:remove', removeHandler);
     };
   }, []);
 

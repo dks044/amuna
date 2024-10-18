@@ -15,6 +15,8 @@ import { TechStack } from '@/types/types';
 import SkillIcon from '../SkillIcon';
 import { TiDelete } from 'react-icons/ti';
 import clsx from 'clsx';
+import UserChangePasswordModal from '../users/UserChangePasswordModal';
+import UserDeleteModal from '../users/UserDeleteModal';
 
 interface SettingModalProps {
   isOpen: boolean;
@@ -29,6 +31,8 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isChangePasswordModal, setIsChangePasswordModal] = useState(false);
+  const [isUserDeleteModal, setIsUserDeleteModal] = useState(false);
 
   const {
     register,
@@ -131,122 +135,132 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className='flex-1 h-100'>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className='space-y-12'>
-            <div className='pb-12 border-b border-gray-900/10'>
-              <h2 className='text-base font-semibold leading-7 text-gray-900 '>프로필</h2>
-              <p className='mt-1 text-sm leading-6 text-gray-600'>프로필을 수정하세요.</p>
+    <>
+      <UserChangePasswordModal
+        isOpen={isChangePasswordModal}
+        onClose={() => setIsChangePasswordModal(false)}
+      />
+      <UserDeleteModal isOpen={isUserDeleteModal} onClose={() => setIsUserDeleteModal(false)} />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <div className='flex-1 h-100'>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className='space-y-12'>
+              <div className='pb-12 border-b border-gray-900/10'>
+                <h2 className='text-base font-semibold leading-7 text-gray-900 '>프로필</h2>
+                <p className='mt-1 text-sm leading-6 text-gray-600'>프로필을 수정하세요.</p>
 
-              <div className='flex flex-col mt-10 gap-y-8'>
-                <Input
-                  disabled={isLoading}
-                  label='이름'
-                  id='name'
-                  errors={errors}
-                  required
-                  register={register}
-                  defaultValue={currentUser.name!}
-                />
-                <div>
-                  <label
-                    htmlFor='photo'
-                    className='block text-sm font-medium leading-6 text-gray-900 '
-                  >
-                    프로필 사진
-                  </label>
-                  <div className='flex items-center mt-2'>
-                    <Image
-                      width='48'
-                      height='48'
-                      className='rounded-full'
-                      src={imagePreview || currentUser?.image || '/images/placeholder.jpg'}
-                      alt='Avatar'
-                    />
-                    <Button
-                      disbaled={isLoading}
-                      secondary
-                      type='button'
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      변경하기
-                    </Button>
-                    <input
-                      id='image'
-                      type='file'
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      className='hidden'
-                      accept='image/*'
-                    />
-                  </div>
-                  <label
-                    htmlFor='photo'
-                    className='block text-sm font-medium leading-6 text-gray-900 mt-7'
-                  >
-                    소개글
-                  </label>
-                  <TextArea
-                    id='introduce'
-                    register={register}
-                    required
-                    errors={errors}
+                <div className='flex flex-col mt-10 gap-y-8'>
+                  <Input
                     disabled={isLoading}
-                    maxLength={50}
-                    defaultValue={currentUser.introduce!}
+                    label='이름'
+                    id='name'
+                    errors={errors}
+                    required
+                    register={register}
+                    defaultValue={currentUser.name!}
                   />
-                  <label
-                    htmlFor='photo'
-                    className='block text-sm font-medium leading-6 text-gray-900 mt-7 mb-2'
-                  >
-                    관심사 태그
-                  </label>
-                  <SearchSkillBar onClickSkillItem={onClickToSetSkills} />
-                  <div className='flex flex-wrap space-x-3'>
-                    {Array.from(skills).map(skill => (
-                      <div className='flex items-center' key={skill}>
-                        <SkillIcon skill={skill} />
-                        <span onClick={() => onClickToRemoveSkills(skill)}>
-                          <TiDelete
-                            className={clsx(
-                              `
+                  <div>
+                    <label
+                      htmlFor='photo'
+                      className='block text-sm font-medium leading-6 text-gray-900 '
+                    >
+                      프로필 사진
+                    </label>
+                    <div className='flex items-center mt-2'>
+                      <Image
+                        width='48'
+                        height='48'
+                        className='rounded-full'
+                        src={imagePreview || currentUser?.image || '/images/placeholder.jpg'}
+                        alt='Avatar'
+                      />
+                      <Button
+                        disbaled={isLoading}
+                        secondary
+                        type='button'
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        변경하기
+                      </Button>
+                      <input
+                        id='image'
+                        type='file'
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className='hidden'
+                        accept='image/*'
+                      />
+                    </div>
+                    <label
+                      htmlFor='photo'
+                      className='block text-sm font-medium leading-6 text-gray-900 mt-7'
+                    >
+                      소개글
+                    </label>
+                    <TextArea
+                      id='introduce'
+                      register={register}
+                      errors={errors}
+                      disabled={isLoading}
+                      maxLength={50}
+                      defaultValue={currentUser.introduce!}
+                    />
+                    <label
+                      htmlFor='photo'
+                      className='block text-sm font-medium leading-6 text-gray-900 mt-7 mb-2'
+                    >
+                      관심사 태그
+                    </label>
+                    <SearchSkillBar onClickSkillItem={onClickToSetSkills} />
+                    <div className='flex flex-wrap space-x-3'>
+                      {Array.from(skills).map(skill => (
+                        <div className='flex items-center' key={skill}>
+                          <SkillIcon skill={skill} />
+                          <span onClick={() => onClickToRemoveSkills(skill)}>
+                            <TiDelete
+                              className={clsx(
+                                `
                           text-gray-500
                           hover:text-gray-300
                           cursor-pointer
                         `,
-                            )}
-                          />
-                        </span>
-                      </div>
-                    ))}
+                              )}
+                            />
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='mt-4'>
-                {/* TODO: Oauth 일경우 해당 버튼 없애기 */}
-                <Button fullWidth>비밀번호 변경</Button>
-              </div>
-              <div className='mt-2'>
-                {/* TODO: Oauth 일경우 해당 버튼 없애기 */}
-                <Button danger fullWidth>
-                  회원 탈퇴
-                </Button>
+
+                {!currentUser.oauth && (
+                  <div className='mt-4'>
+                    <Button fullWidth onClick={() => setIsChangePasswordModal(true)}>
+                      비밀번호 변경
+                    </Button>
+                  </div>
+                )}
+
+                <div className='mt-2'>
+                  <Button danger fullWidth onClick={() => setIsUserDeleteModal(true)}>
+                    회원 탈퇴
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className='flex items-center justify-end mt-6 gap-x-6'>
-            <Button disbaled={isLoading} secondary onClick={onClose}>
-              취소
-            </Button>
-            <Button disbaled={isLoading} type='submit'>
-              저장
-            </Button>
-          </div>
-        </form>
-      </div>
-    </Modal>
+            <div className='flex items-center justify-end mt-6 gap-x-6'>
+              <Button disbaled={isLoading} secondary onClick={onClose}>
+                취소
+              </Button>
+              <Button disbaled={isLoading} type='submit'>
+                저장
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Modal>
+    </>
   );
 };
 

@@ -11,6 +11,7 @@ import { HiEllipsisHorizontal } from 'react-icons/hi2';
 import ProfileDrawer from './ProfileDrawer';
 import { pusherClient } from '@/libs/pusher';
 import { FullConversationType } from '@/types';
+import useConversation from '@/hooks/useConversation';
 
 interface HeaderProps {
   conversation: Conversation & {
@@ -23,6 +24,7 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
   const [item, setItem] = useState<FullConversationType | null>(null);
   const otherUser = useOtherUser(conversation);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { conversationId } = useConversation();
 
   const { members } = useActiveList();
   const isActive = members.indexOf(otherUser?.email!) !== -1;
@@ -37,6 +39,7 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
   const pusherKey = currentUser.email;
   useEffect(() => {
     pusherClient.subscribe(pusherKey!);
+
     const updateHandler = (updateConversation: FullConversationType) => {
       setItem(updateConversation);
     };
@@ -46,7 +49,7 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
       pusherClient.unsubscribe(pusherKey!);
       pusherClient.unbind('conversation:update', updateHandler);
     };
-  }, [pusherKey]);
+  }, [pusherKey, conversationId]);
 
   return (
     <React.Fragment>

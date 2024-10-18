@@ -20,6 +20,7 @@ model User {
   hashedPassword String?
   image         String?
   description   String?
+  oauth         Boolean?
   accounts      Account[]
   messages      Message[]
   sessions      Session[]

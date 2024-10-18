@@ -24,25 +24,25 @@ const UserProfileModal = ({ isOpen, onClose, user }: UserProfileModalProps) => {
             width={48}
             height={48}
             className='rounded-full'
-            src={user.image || '/images/placeholder.jpg'}
+            src={user?.image || '/images/placeholder.jpg'}
             alt='User Avatar'
           />
           <div className='ml-4'>
-            <h3 className='text-lg font-medium'>{user.name}</h3>
+            <h3 className='text-lg font-medium'>{user?.name}</h3>
           </div>
         </div>
 
         <div className='mb-4'>
           <h4 className='font-medium'>소개글</h4>
           <p className='text-sm text-gray-500 font-notosans'>
-            {user.introduce || '소개글이 없습니다.'}
+            {user?.introduce || '소개글이 없습니다.'}
           </p>
         </div>
 
         <div className='mb-4'>
           <h4 className='font-medium '>관심사</h4>
           <div className='flex gap-2 flex-wrap'>
-            {Array.from(user.tags).map(skill => (
+            {Array.from(user?.tags).map(skill => (
               <div className='flex items-center' key={skill}>
                 <SkillIcon skill={skill} />
               </div>
@@ -53,7 +53,7 @@ const UserProfileModal = ({ isOpen, onClose, user }: UserProfileModalProps) => {
         <div className='mb-4'>
           <h4 className='font-medium'>가입일</h4>
           <p className='text-sm text-gray-500 font-notosans'>
-            {format(new Date(user.createdAt), 'PP')}
+            {format(new Date(user?.createdAt), 'PP')}
           </p>
         </div>
         <div className='flex items-center justify-end mt-6 gap-x-6'>

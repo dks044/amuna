@@ -50,6 +50,7 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
     existingConversation.users.forEach(user => {
       if (user.email) {
         pusherServer.trigger(user.email, 'conversation:remove', existingConversation);
+        pusherServer.trigger('all', 'open_conversation:remove', existingConversation);
       }
     });
 

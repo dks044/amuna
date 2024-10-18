@@ -91,6 +91,7 @@ export const authOptions: AuthOptions = {
                 name: profile.name,
                 image: profile.image,
                 gender: 'other',
+                oauth: true,
               },
             });
           }

@@ -58,7 +58,7 @@ const MobileUI = ({ currentUser, publicConversations }: MoblieUIInterface) => {
 
   useEffect(() => {
     pusherClient.subscribe('all');
-    setIsFindUserModal(false);
+
     const newHandler = (conversation: FullConversationType) => {
       setItems(current => {
         if (find(current, { id: conversation.id })) {
@@ -67,12 +67,19 @@ const MobileUI = ({ currentUser, publicConversations }: MoblieUIInterface) => {
         return [conversation, ...current];
       });
     };
+    const removeHandler = (conversation: FullConversationType) => {
+      setItems(current => {
+        return [...current.filter(item => item.id !== conversation.id)];
+      });
+    };
 
     pusherClient.bind('open_conversation:new', newHandler);
+    pusherClient.bind('open_conversation:remove', removeHandler);
 
     return () => {
       pusherClient.unsubscribe('all');
       pusherClient.unbind('open_conversation:new', newHandler);
+      pusherClient.unbind('open_conversation:remove', removeHandler);
     };
   }, []);
 

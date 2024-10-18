@@ -85,7 +85,7 @@ const ConversationBox = ({ data, selected }: ConversationBoxProps) => {
       <div className='flex-1 min-w-0 '>
         <div className='focus:outline-none'>
           <div className='flex items-center justify-between mb-1'>
-            <p className='font-medium text-gray-900 text-md'>{data.name || otherUser.name}</p>
+            <p className='font-medium text-gray-900 text-md'>{data.name || otherUser?.name}</p>
             {lastMessage?.cretedAt && (
               <p className='text-xs font-light text-gray-400'>
                 {format(new Date(lastMessage.cretedAt), 'p')}
