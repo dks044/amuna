@@ -32,14 +32,10 @@ export async function POST(request: Request) {
       },
     });
 
-    //생성한 사람에게도 실시간 생성
-    newConversation.users.map(user => {
-      if (user.email) {
-        pusherServer.trigger(user.email, 'conversation:new', newConversation);
-      }
-    });
     //오픈채팅방 목록 실시간 생성
     pusherServer.trigger('all', 'open_conversation:new', newConversation);
+    //채팅방 리스트 생성
+    pusherServer.trigger(currentUser.email, 'conversation:new', newConversation);
 
     return NextResponse.json(newConversation);
   } catch (error) {

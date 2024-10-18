@@ -15,6 +15,7 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
     if (!currentUser?.id) {
       return NextResponse.json(null);
     }
+
     const existingConversation = await prisma.conversation.findUnique({
       where: {
         id: conversationId,
@@ -24,20 +25,26 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
         messages: true,
       },
     });
+
     if (!existingConversation) {
       return new NextResponse('Invalid Id', { status: 404 });
     }
 
-    //채팅방 안에 이미지메시지 제거
     const deleteImagePromises = existingConversation.messages.map(async message => {
       if (message.image) {
         await deleteImageFromCloudinary(message.image);
       }
     });
-
     await Promise.all(deleteImagePromises);
 
-    //1대1 채팅방 상대방도 제거
+    existingConversation.users.forEach(user => {
+      if (user.email) {
+        pusherServer.trigger(user.email!, 'conversation:remove', existingConversation);
+      }
+    });
+    pusherServer.trigger(currentUser.email!, 'conversation:remove', existingConversation);
+
+    // 1대1 채팅방 상대방도 제거
     const deletedConversation = await prisma.conversation.deleteMany({
       where: {
         id: conversationId,
@@ -47,15 +54,27 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
       },
     });
 
-    existingConversation.users.forEach(user => {
-      if (user.email) {
-        pusherServer.trigger(user.email, 'conversation:remove', existingConversation);
-        pusherServer.trigger('all', 'open_conversation:remove', existingConversation);
-      }
+    const updateUsers = existingConversation.users.forEach(async user => {
+      // 사용자 대화방 ID 업데이트
+      const userBeforeUpdate = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { conversationIds: true },
+      });
+      console.log('업데이트 전 => ', userBeforeUpdate?.conversationIds);
+
+      const updatedUser = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          conversationIds: {
+            set: userBeforeUpdate?.conversationIds.filter(id => id !== conversationId) || [],
+          },
+        },
+      });
+      console.log('업데이트 후 => ', updatedUser.conversationIds);
     });
 
     return NextResponse.json(deletedConversation);
   } catch (error) {
-    return new NextResponse('error', { status: 500 });
+    return new NextResponse('Error', { status: 500 });
   }
 }

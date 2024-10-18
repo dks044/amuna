@@ -48,11 +48,15 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
       );
     };
 
-    const newHandler = (conversation: FullConversationType) => {
+    const newHandler = (conversation: any) => {
+      console.log('New conversation event received:', conversation);
+
       setItems(current => {
+        // 이미 존재하는 대화방인 경우 업데이트 하지 않음
         if (find(current, { id: conversation.id })) {
           return current;
         }
+        // 새로운 대화방을 배열의 앞에 추가
         return [conversation, ...current];
       });
     };
@@ -65,16 +69,16 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
       });
     };
 
-    const leaveHandler = (conversation: FullConversationType) => {
-      toast('채팅방이 나갔어요.');
-      router.push('/conversations');
-      setItems(current => {
-        return current.filter(item => item.id !== conversation.id);
-      });
-    };
+    // const leaveHandler = (conversation: FullConversationType) => {
+    //   toast('채팅방이 나갔어요.');
+    //   router.push('/conversations');
+    //   setItems(current => {
+    //     return current.filter(item => item.id !== conversation.id);
+    //   });
+    // };
 
-    pusherClient.bind('conversation:update', updateHandler);
     pusherClient.bind('conversation:new', newHandler);
+    pusherClient.bind('conversation:update', updateHandler);
     pusherClient.bind('conversation:remove', removeHandler);
 
     return () => {
@@ -95,17 +99,17 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
       <aside
         className={clsx(
           `
-        fixed
-        inset-y-0
-        pb-20
-        lg:pb-0
-        lg:left-20
-        lg:w-80
-        lg:block
-        overflow-y-auto
-        border-r
-        border-gray-200
-      `,
+            fixed
+            inset-y-0
+            pb-20
+            lg:pb-0
+            lg:left-20
+            lg:w-80
+            lg:block
+            overflow-y-auto
+            border-r
+            border-gray-200
+          `,
           isOpen ? 'hidden' : 'block w-full left-0',
         )}
       >
@@ -116,7 +120,7 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
               <IconButton icon={MdOutlineGroupAdd} onClick={() => setIsModealOpen(true)} />
             </div>
           </div>
-          {items.length === 0 ? (
+          {items.length === 0 || !items ? (
             <div
               className='w-full text-gray-300 flex justify-center text-lg transition hover:text-gray-500 cursor-pointer'
               onClick={() => router.push('chatrooms')}

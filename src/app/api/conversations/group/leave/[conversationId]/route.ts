@@ -64,7 +64,26 @@ export async function PUT(request: Request, { params }: { params: Iparam }) {
     await pusherServer.trigger(currentUser.email!, 'conversation:update', updatedConversation);
     await pusherServer.trigger(conversationId, 'messages:new', leaveMessage);
     await pusherServer.trigger(currentUser.email!, 'publicConversation:leave', updatedConversation);
+    await pusherServer.trigger(currentUser.email!, 'conversation:remove', updatedConversation);
 
+    console.log('제거할 채팅방 id, => ', conversationId);
+    // 사용자 대화방 ID 업데이트
+    const userBeforeUpdate = await prisma.user.findUnique({
+      where: { id: currentUser.id },
+      select: { conversationIds: true },
+    });
+    console.log('업데이트 전 => ', userBeforeUpdate?.conversationIds);
+
+    const updatedUser = await prisma.user.update({
+      where: { id: currentUser.id },
+      data: {
+        conversationIds: {
+          set: userBeforeUpdate?.conversationIds.filter(id => id !== conversationId) || [],
+        },
+      },
+    });
+
+    console.log('업데이트 후 => ', updatedUser.conversationIds);
     return NextResponse.json(updatedConversation);
   } catch (error) {
     console.error('Error leaving conversation:', error);

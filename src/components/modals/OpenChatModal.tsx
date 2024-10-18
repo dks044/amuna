@@ -57,7 +57,7 @@ const OpenChatModal = ({ isOpen, onClose, currentUser }: OpenChatModalProps) => 
     try {
       await axios.post(`/api/conversations/group`, requestData);
       onClose();
-      router.push('/conversations');
+      router.replace('/conversations');
     } catch (error) {
       toast.error('이미 참여중인 방이에요.');
     } finally {

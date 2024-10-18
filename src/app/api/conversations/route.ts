@@ -27,11 +27,12 @@ export async function POST(request: Request) {
         ],
       },
     });
+    //1대1 중복생성 방지
     const singleConversation = existingConversations[0];
-
     if (singleConversation) {
       return NextResponse.json(singleConversation);
     }
+
     const newConversation = await prisma.conversation.create({
       data: {
         users: {
@@ -52,6 +53,7 @@ export async function POST(request: Request) {
 
     newConversation.users.map(user => {
       if (user.email) {
+        console.log('유저의 이메일=> ', user.email);
         pusherServer.trigger(user.email, 'conversation:new', newConversation);
       }
     });

@@ -75,7 +75,7 @@ model Conversation {
   name String?
   tag  String[]
   image String?
-  isGroup Boolean?
+  isGroup Boolean? //오픈채팅방 유무
   createdBy    String?  @db.ObjectId //오픈(그륩) 채팅방 생성자
 
   messageIds String[] @db.ObjectId
