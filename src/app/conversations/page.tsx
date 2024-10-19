@@ -7,10 +7,6 @@ import React from 'react';
 const ConversationPage = () => {
   const { isOpen } = useConversation();
 
-  if (!isOpen) {
-    return <div>에러가 발생했습니다</div>;
-  }
-
   return (
     <div
       className={clsx(
