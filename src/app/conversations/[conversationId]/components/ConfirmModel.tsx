@@ -74,11 +74,11 @@ const ConfirmModal = ({ isOpen, onClose, currentUser, data }: ConfirmModalProps)
         </div>
         <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
           <DialogTitle as='h3' className='text-base font-semibold leading-6 text-gray-900'>
-            {data?.createdBy === currentUser.id ? <>채팅방 삭제</> : <>채팅방 나가기</>}
+            {data?.createdBy === currentUser?.id ? <>채팅방 삭제</> : <>채팅방 나가기</>}
           </DialogTitle>
           <div className='mt-2'>
             <p className='text-sm text-gray-500'>
-              {data?.createdBy === currentUser.id ? (
+              {data?.createdBy === currentUser?.id ? (
                 <>이 채팅방을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</>
               ) : (
                 <>채팅방 나가기</>
@@ -89,7 +89,7 @@ const ConfirmModal = ({ isOpen, onClose, currentUser, data }: ConfirmModalProps)
       </div>
       <div className='mt-5 sm:mt-4 sm:flex sm:w-full'>
         <Button disbaled={isLoading} fullWidth danger onClick={onDelete}>
-          {data?.createdBy === currentUser.id ? <>삭제</> : <>나가기</>}
+          {data?.createdBy === currentUser?.id ? <>삭제</> : <>나가기</>}
         </Button>
         <Button disbaled={isLoading} fullWidth secondary onClick={onClose}>
           취소

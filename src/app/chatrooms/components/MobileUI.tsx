@@ -84,21 +84,20 @@ const MobileUI = ({ currentUser, publicConversations }: MoblieUIInterface) => {
   }, []);
 
   useEffect(() => {
-    // 필터링 로직
     const filterItems = () => {
       let newFilteredItems = items;
 
       // 키워드로 필터링
       if (keyword) {
         newFilteredItems = newFilteredItems.filter(item =>
-          item.name!.toLowerCase().includes(keyword.toLowerCase()),
+          item.name?.toLowerCase().includes(keyword.toLowerCase()),
         );
       }
 
       // 기술로 필터링
       if (skills.length > 0) {
         newFilteredItems = newFilteredItems.filter(item =>
-          skills.some(skill => item.tag.includes(skill)),
+          skills.some(skill => item.tag?.includes(skill)),
         );
       }
 
@@ -109,8 +108,8 @@ const MobileUI = ({ currentUser, publicConversations }: MoblieUIInterface) => {
   }, [items, keyword, skills]);
 
   const handleOpenModal = (conversation: FullConversationType) => {
-    setSelectedConversation(conversation); // 선택된 채팅방 저장
-    setIsModalOpen(true); // 모달 열기
+    setSelectedConversation(conversation);
+    setIsModalOpen(true);
   };
 
   useEffect(() => {

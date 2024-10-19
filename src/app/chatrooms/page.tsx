@@ -7,6 +7,15 @@ import getCurrentUser from '../actions/getCurrentUser';
 const ChatroomsPage = async () => {
   const publicConversations = await getPulbicConversations();
   const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return (
+      <div className='h-full'>
+        <DesktopUI publicConversations={publicConversations} />
+        <div>에러가 발생했습니다.</div>;
+      </div>
+    );
+  }
   return (
     <div className='h-full'>
       <DesktopUI publicConversations={publicConversations} />

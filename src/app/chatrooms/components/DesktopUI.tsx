@@ -82,14 +82,14 @@ const DesktopUI = ({ publicConversations }: DesktopUIInterface) => {
       // 키워드로 필터링
       if (keyword) {
         newFilteredItems = newFilteredItems.filter(item =>
-          item.name!.toLowerCase().includes(keyword.toLowerCase()),
+          item.name?.toLowerCase().includes(keyword.toLowerCase()),
         );
       }
 
       // 기술로 필터링
       if (skills.length > 0) {
         newFilteredItems = newFilteredItems.filter(item =>
-          skills.some(skill => item.tag.includes(skill)),
+          skills.some(skill => item.tag?.includes(skill)),
         );
       }
 

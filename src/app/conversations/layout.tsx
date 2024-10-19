@@ -8,6 +8,10 @@ import getCurrentUser from '../actions/getCurrentUser';
 const ConversationsLayout = async ({ children }: { children: React.ReactNode }) => {
   const conversations = await getConversations();
   const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    return <div>에러가 발생했습니다.</div>;
+  }
+
   return (
     <Sidebar>
       <div className='h-full'>

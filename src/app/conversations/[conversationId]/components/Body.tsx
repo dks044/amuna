@@ -14,6 +14,9 @@ interface BodyProps {
 const Body = ({ initialMessages }: BodyProps) => {
   const [messages, setMessages] = useState<FullMessageType[]>(initialMessages);
   const { conversationId } = useConversation();
+  if (!conversationId) {
+    return <div>에러가 발생했습니다.</div>;
+  }
   const bottomRef = useRef<HTMLDivElement>(null);
 
   //메시지 본사람 post요청
