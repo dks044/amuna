@@ -48,7 +48,7 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
       );
     };
 
-    const newHandler = (conversation: any) => {
+    const newHandler = (conversation: FullConversationType) => {
       console.log('New conversation event received:', conversation);
 
       setItems(current => {
@@ -63,7 +63,7 @@ const ConversationList = ({ initialItems, currentUser }: ConversationListProps) 
 
     const removeHandler = (conversation: FullConversationType) => {
       toast('채팅방이 삭제됐어요.');
-      router.push('/conversations');
+      router.replace('/conversations');
       setItems(current => {
         return [...current.filter(item => item.id !== conversation.id)];
       });

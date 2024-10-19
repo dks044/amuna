@@ -16,6 +16,11 @@ const Body = ({ initialMessages }: BodyProps) => {
   const { conversationId } = useConversation();
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  //메시지 본사람 post요청
+  useEffect(() => {
+    axios.post(`/api/conversations/${conversationId}/seen`);
+  }, [conversationId]);
+
   // 메시지를 정렬
   useEffect(() => {
     const sortedMessages = [...messages].sort((a, b) => {
@@ -29,8 +34,9 @@ const Body = ({ initialMessages }: BodyProps) => {
 
     //TODO: API 구현해야함
     const messageHandler = (message: FullMessageType) => {
-      //axios.post(`/api/conversations/${conversationId}/seen`);
-      //채팅목록에 메시지 추가
+      axios.post(`/api/conversations/${conversationId}/seen`);
+      console.log('new Message => ', message);
+
       setMessages(current => {
         if (find(current, { id: message.id })) {
           return current;
@@ -40,23 +46,30 @@ const Body = ({ initialMessages }: BodyProps) => {
       bottomRef?.current?.scrollIntoView();
     };
 
+    const updateMessageHandler = (newMessage: FullMessageType) => {
+      setMessages(current =>
+        current.map(currentMessage => {
+          if (currentMessage.id === newMessage.id) {
+            return newMessage;
+          }
+          return currentMessage;
+        }),
+      );
+    };
+
     pusherClient.bind('messages:new', messageHandler);
-    //해당 컴포넌트(Body.tsx) 언바운드 될때(사용 안할떄) unbound한다.
+    pusherClient.bind('messages:update', updateMessageHandler);
     return () => {
-      //메모리 누수 방지를 위해
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind('messages:new', messageHandler);
+      pusherClient.unbind('messages:update', updateMessageHandler);
     };
-  }, []);
+  }, [conversationId]);
 
   return (
     <div className='flex-1 overflow-y-auto'>
       {messages.map((message, index) => (
-        <MessageBox
-          isLast={index === messages.length - 1} //마지막 메시지인지 유무
-          key={message.id}
-          data={message}
-        />
+        <MessageBox isLast={index === messages.length - 1} key={message.id} data={message} />
       ))}
       <div className='pt-24' ref={bottomRef} />
     </div>
