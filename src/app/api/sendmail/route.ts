@@ -1,6 +1,7 @@
 import { sendEmail } from '@/libs/mail';
 import { NextResponse } from 'next/server';
 import redis from '@/libs/redis';
+import prisma from '@/libs/prismadb';
 
 export async function POST(request: Request) {
   try {
@@ -10,6 +11,14 @@ export async function POST(request: Request) {
     const existingData = await redis.get(email);
     if (existingData) {
       return new NextResponse('existing Mail Code, not yet 3minute', { status: 400 });
+    }
+    const existingEmail = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (existingEmail) {
+      return new NextResponse('existing eMail Code', { status: 403 });
     }
 
     await redis.set(email, code, 'EX', 180);

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import UserProfileModal from './users/UserProfileModal';
 import { FaTools } from 'react-icons/fa';
 import clsx from 'clsx';
+import useActiveList from '@/hooks/useActiveList';
 
 interface AvataProps {
   user?: User;
@@ -14,6 +15,8 @@ interface AvataProps {
 
 const Avatar = ({ user, notVisibleActive, settingModal, isMobile }: AvataProps) => {
   const [isProfileModal, setIsProfileModal] = useState(false);
+  const { members } = useActiveList();
+  const isActive = Array.isArray(members) && members.indexOf(user?.id!) !== -1;
   const handleClick = (e: any) => {
     if (settingModal) {
       return;
@@ -69,13 +72,31 @@ const Avatar = ({ user, notVisibleActive, settingModal, isMobile }: AvataProps) 
           >
             <FaTools className='text-lime-500' />
           </span>
+        ) : null}
+        {isActive ? (
+          <span
+            className={`
+                  absolute
+                  block
+                  rounded-full
+                  bg-green-500
+                  ring-2
+                  ring-white
+                  top-0
+                  right-0
+                  h-2 
+                  w-2
+                  md-h-3
+                  md-w-3
+                  `}
+          />
         ) : (
           <span
             className={`
           absolute
           block
           rounded-full
-          bg-green-500
+          bg-gray-500
           ring-2
           ring-white
           top-0

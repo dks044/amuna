@@ -32,7 +32,6 @@ const Body = ({ initialMessages }: BodyProps) => {
   useEffect(() => {
     pusherClient.subscribe(conversationId);
 
-    //TODO: API 구현해야함
     const messageHandler = (message: FullMessageType) => {
       axios.post(`/api/conversations/${conversationId}/seen`);
       console.log('new Message => ', message);
@@ -52,6 +51,7 @@ const Body = ({ initialMessages }: BodyProps) => {
           if (currentMessage.id === newMessage.id) {
             return newMessage;
           }
+
           return currentMessage;
         }),
       );

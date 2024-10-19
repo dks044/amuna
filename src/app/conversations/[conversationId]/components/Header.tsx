@@ -27,7 +27,9 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
   const { conversationId } = useConversation();
 
   const { members } = useActiveList();
-  const isActive = members.indexOf(otherUser?.email!) !== -1;
+
+  console.log(members); // members의 값을 로그로 확인
+  const isActive = Array.isArray(members) && members.indexOf(otherUser?.id.toString()) !== -1;
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
       return `${conversation.userIds.length} members`;
@@ -88,17 +90,7 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
           )}
           <div className='flex flex-col '>
             <div>{conversation.name || otherUser.name}</div>
-            <div className='text-sm font-light text-neutral-500'>
-              {item ? (
-                conversation.isGroup ? (
-                  <>{item.userIds.length}&nbsp;members</>
-                ) : (
-                  <>{statusText}</>
-                )
-              ) : (
-                <span>{statusText}</span>
-              )}
-            </div>
+            <div className='text-sm font-light text-neutral-500'>{statusText}</div>
           </div>
         </div>
         <HiEllipsisHorizontal

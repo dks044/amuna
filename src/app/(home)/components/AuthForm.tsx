@@ -202,7 +202,11 @@ const AuthForm = () => {
         code: generatedCode,
       })
       .then(() => toast('인증코드를 메일로 보냈어요.'))
-      .catch(() => toast.error('메일을 보낸지 3분이 지나지 않았거나, 전송 오류에요.'))
+      .catch((error: AxiosError) => {
+        if (error.status === 400) toast.error('메일을 보낸지 3분이 지나지 않았어요');
+        if (error.status === 403) toast.error('이미 존재하는 이메일이에요.');
+        if (error.status === 500) toast.error('전송 오류가 발생했어요');
+      })
       .finally(() => {
         setIsSendLoading(false);
         setIsTimerActive(true);
