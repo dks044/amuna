@@ -15,6 +15,9 @@ const jua = Jua({
 export const metadata: Metadata = {
   title: 'Amuna',
   description: '관심사 채팅',
+  icons: {
+    icon: '/logo2.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
