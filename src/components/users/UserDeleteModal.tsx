@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'; // 알림을 위한 toast 임포트 추가
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import useLogout from '@/hooks/useLogout';
 
 interface UserDeleteModalProps {
   isOpen: boolean;
@@ -22,7 +23,8 @@ const UserDeleteModal: React.FC<UserDeleteModalProps> = ({ isOpen, onClose }) =>
       const response = await axios.delete(`/api/settings/userdelete`);
       if (response.status === 200) {
         toast.success('계정이 삭제되었습니다.');
-        signOut();
+        await useLogout();
+        await signOut();
         router.push('/');
         onClose();
       }

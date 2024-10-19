@@ -4,6 +4,7 @@ import { HiChat, HiUsers } from 'react-icons/hi';
 import { HiArrowLeftOnRectangle } from 'react-icons/hi2';
 import useConversation from './useConversation';
 import { useMemo } from 'react';
+import useLogout from './useLogout';
 
 const useRoutes = () => {
   const pathname = usePathname();
@@ -24,7 +25,10 @@ const useRoutes = () => {
       },
       {
         label: 'Logout',
-        onClick: () => signOut(),
+        onClick: async () => {
+          await useLogout();
+          await signOut({ callbackUrl: '/' });
+        },
         href: '#',
         icon: HiArrowLeftOnRectangle,
       },
