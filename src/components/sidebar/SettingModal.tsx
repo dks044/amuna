@@ -61,6 +61,7 @@ const SettingModal = ({ isOpen, onClose, currentUser }: SettingModalProps) => {
     try {
       await axios.post(`/api/settings`, requestData);
       onClose();
+      router.refresh();
     } catch (error) {
       toast.error('에러가 발생했습니다.');
     } finally {
