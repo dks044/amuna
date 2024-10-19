@@ -62,29 +62,30 @@ const MessageBox = ({ data, isLast }: MessageBoxProps) => {
           <div className='text-sm text-gray-500'>{data.sender.name}</div>
           <div className='text-xs text-gray-400'>{format(new Date(data.cretedAt), 'p')}</div>
         </div>
-      </div>
-      <div className={message}>
-        <ImageModel
-          src={data.image}
-          isOpen={imageModalOpen}
-          onClose={() => setImageModalOpen(false)}
-        />
-        {data.image ? (
-          <Image
-            alt='Image'
-            height={288}
-            width={288}
-            onClick={() => setImageModalOpen(true)}
+
+        <div className={message}>
+          <ImageModel
             src={data.image}
-            className='object-cover transition cursor-pointer hover:scale-110 translate'
+            isOpen={imageModalOpen}
+            onClose={() => setImageModalOpen(false)}
           />
-        ) : (
-          <>
-            <div>{data.body}</div>
-          </>
-        )}
+          {data.image ? (
+            <Image
+              alt='Image'
+              height={288}
+              width={288}
+              onClick={() => setImageModalOpen(true)}
+              src={data.image}
+              className='object-cover transition cursor-pointer hover:scale-110 translate'
+            />
+          ) : (
+            <>
+              <div>{data.body}</div>
+            </>
+          )}
+        </div>
         {isLast && isOwn && seenList.length > 0 && (
-          <div className='text-xs font-light text-gray-500'>{`Seen by ${seenList}`}</div>
+          <div className='text-xs font-light text-gray-500'>{`${seenList} 님이 확인했어요`}</div>
         )}
       </div>
     </div>
