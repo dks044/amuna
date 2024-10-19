@@ -9,7 +9,8 @@ import React, { useEffect } from 'react';
 const ActiveContext = () => {
   const session = useSession();
 
-  const { add, remove, set } = useActiveList();
+  const { members, add, remove, set } = useActiveList();
+  console.log(members);
   //userid redis 할당 및 redis에서 'Active' 인 userid들을 들고옴 (return 값)
   const connectedUser = async () => {
     try {
@@ -31,8 +32,9 @@ const ActiveContext = () => {
   useEffect(() => {
     pusherClient.subscribe('amuna-online');
     if (session.data?.user) {
-      set([]); //처음엔 초기화
-      connectedUser();
+      if (!members.includes(session.data.user.id)) {
+        connectedUser();
+      }
     }
     const newConnectedUser = (userId: string) => {
       add(userId);

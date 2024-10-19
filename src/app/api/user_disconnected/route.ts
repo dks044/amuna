@@ -1,5 +1,4 @@
 import getCurrentUser from '@/app/actions/getCurrentUser';
-import { userConnected, userDisconnected } from '@/hooks/useConnected';
 import { pusherServer } from '@/libs/pusher';
 import redis from '@/libs/redis';
 import { NextResponse } from 'next/server';

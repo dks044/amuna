@@ -35,7 +35,7 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
       return `${conversation.userIds.length} members`;
     }
 
-    return isActive ? 'Active' : 'Offline';
+    return isActive ? 'Online' : 'Offline';
   }, [conversation, isActive]);
 
   const pusherKey = currentUser.email;
