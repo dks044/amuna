@@ -22,6 +22,7 @@ export async function PUT(request: Request, { params }: { params: Iparam }) {
       },
       include: {
         users: true,
+        messages: true,
       },
     });
 
@@ -66,24 +67,30 @@ export async function PUT(request: Request, { params }: { params: Iparam }) {
     await pusherServer.trigger(currentUser.email!, 'publicConversation:leave', updatedConversation);
     await pusherServer.trigger(currentUser.email!, 'conversation:remove', updatedConversation);
 
+    const messageIdsToRemove = existingConversation.messages.map(message => message.id);
     console.log('제거할 채팅방 id, => ', conversationId);
     // 사용자 대화방 ID 업데이트
     const userBeforeUpdate = await prisma.user.findUnique({
       where: { id: currentUser.id },
-      select: { conversationIds: true },
+      select: { conversationIds: true, seenMessageIds: true },
     });
     console.log('업데이트 전 => ', userBeforeUpdate?.conversationIds);
-
+    console.log('seenMessagesIds 전 => ', userBeforeUpdate?.seenMessageIds);
     const updatedUser = await prisma.user.update({
       where: { id: currentUser.id },
       data: {
         conversationIds: {
           set: userBeforeUpdate?.conversationIds.filter(id => id !== conversationId) || [],
         },
+        seenMessageIds: {
+          set:
+            userBeforeUpdate?.seenMessageIds.filter(id => !messageIdsToRemove.includes(id)) || [],
+        },
       },
     });
 
     console.log('업데이트 후 => ', updatedUser.conversationIds);
+    console.log('seenMessagesIds 후 => ', updatedUser.seenMessageIds);
     return NextResponse.json(updatedConversation);
   } catch (error) {
     console.error('Error leaving conversation:', error);

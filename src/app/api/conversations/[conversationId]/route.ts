@@ -44,6 +44,34 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
     });
     pusherServer.trigger(currentUser.email!, 'conversation:remove', existingConversation);
 
+    const messageIdsToRemove = existingConversation.messages.map(message => message.id);
+
+    const updateUsers = existingConversation.users.forEach(async user => {
+      // 사용자 대화방 ID 업데이트
+      const userBeforeUpdate = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { conversationIds: true, seenMessageIds: true }, // seenMessagesIds도 선택
+      });
+      console.log('업데이트 전 => ', userBeforeUpdate?.conversationIds);
+      console.log('seenMessagesIds 전 => ', userBeforeUpdate?.seenMessageIds);
+
+      const updatedUser = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          conversationIds: {
+            set: userBeforeUpdate?.conversationIds.filter(id => id !== conversationId) || [],
+          },
+          seenMessageIds: {
+            set:
+              userBeforeUpdate?.seenMessageIds.filter(id => !messageIdsToRemove.includes(id)) || [],
+          },
+        },
+      });
+
+      console.log('업데이트 후 => ', updatedUser.conversationIds);
+      console.log('seenMessagesIds 후 => ', updatedUser.seenMessageIds);
+    });
+
     // 1대1 채팅방 상대방도 제거
     const deletedConversation = await prisma.conversation.deleteMany({
       where: {
@@ -52,25 +80,6 @@ export async function DELETE(request: Request, { params }: { params: Iparam }) {
           hasSome: [currentUser.id],
         },
       },
-    });
-
-    const updateUsers = existingConversation.users.forEach(async user => {
-      // 사용자 대화방 ID 업데이트
-      const userBeforeUpdate = await prisma.user.findUnique({
-        where: { id: user.id },
-        select: { conversationIds: true },
-      });
-      console.log('업데이트 전 => ', userBeforeUpdate?.conversationIds);
-
-      const updatedUser = await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          conversationIds: {
-            set: userBeforeUpdate?.conversationIds.filter(id => id !== conversationId) || [],
-          },
-        },
-      });
-      console.log('업데이트 후 => ', updatedUser.conversationIds);
     });
 
     return NextResponse.json(deletedConversation);
