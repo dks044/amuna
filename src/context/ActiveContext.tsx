@@ -10,7 +10,7 @@ const ActiveContext = () => {
   const session = useSession();
 
   const { members, add, remove, set } = useActiveList();
-  console.log(members);
+  //console.log(members);
   //userid redis 할당 및 redis에서 'Active' 인 userid들을 들고옴 (return 값)
   const connectedUser = async () => {
     try {

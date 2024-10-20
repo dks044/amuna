@@ -28,12 +28,11 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
 
   const { members } = useActiveList();
 
-  console.log(members); // members의 값을 로그로 확인
   const isActive = Array.isArray(members) && members.indexOf(otherUser?.id.toString()) !== -1;
   const statusText = useMemo(() => {
-    if (conversation.isGroup) {
-      return `${item?.users.length} members`;
-    }
+    // if (conversation.isGroup) {
+    //   return `${item?.users.length} members`;
+    // }
 
     return isActive ? 'Online' : 'Offline';
   }, [conversation, isActive]);
@@ -43,6 +42,7 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
     pusherClient.subscribe(pusherKey!);
 
     const updateHandler = (updateConversation: FullConversationType) => {
+      console.log('update conversation');
       setItem(updateConversation);
     };
 
@@ -90,7 +90,17 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
           )}
           <div className='flex flex-col '>
             <div>{conversation.name || otherUser?.name}</div>
-            <div className='text-sm font-light text-neutral-500'>{statusText}</div>
+            <div className='text-sm font-light text-neutral-500'>
+              {conversation?.isGroup ? (
+                <>
+                  {item
+                    ? `${item.userIds.length} members`
+                    : `${conversation.userIds.length} members`}
+                </>
+              ) : (
+                <>{statusText}</>
+              )}
+            </div>
           </div>
         </div>
         <HiEllipsisHorizontal
