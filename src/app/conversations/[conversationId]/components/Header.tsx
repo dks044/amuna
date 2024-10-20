@@ -32,7 +32,7 @@ const Header = ({ conversation, currentUser }: HeaderProps) => {
   const isActive = Array.isArray(members) && members.indexOf(otherUser?.id.toString()) !== -1;
   const statusText = useMemo(() => {
     if (conversation.isGroup) {
-      return `${item?.userIds.length} members`;
+      return `${item?.users.length} members`;
     }
 
     return isActive ? 'Online' : 'Offline';
