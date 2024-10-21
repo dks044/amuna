@@ -343,12 +343,15 @@
 <p>따라서 <strong>사용자가 복잡한 인증 절차를 거치지 않고 손쉽게 접근할 수 있는 방법</strong>이 필요하다는 점을 절실히 느꼈습니다. <strong>이 방법을 실현시킬 수 있는 방법이 Oauth(소셜로그인) 이라고 생각하여 해당 기능 구현에 도입</strong>했습니다.</p>
 <p>이에 따라, <code>NextAuth.js</code>와 <code>OAuth</code>를 활용하여 <strong>원터치 로그인 기능을 도입</strong>하였습니다.
 이 구현을 통해, <strong><em>구글이나 깃허브와 같은 다양한 소셜 플랫폼과의 간편한 인증 연동이 가능해졌습니다.</em></strong></p>
-
+    <br>
+    <h5><a href="#목차">🔎 목차로 이동 </a> </h5>
 </div>
 <br><br>
 <div>
     <h1 id="erd">4. 💾 ERD </h1>
     <img src="https://github.com/user-attachments/assets/3819a243-0546-40a9-8b8c-8212bfa34984" alt="image">
+      <br>
+    <h5><a href="#목차">🔎 목차로 이동 </a> </h5>
 </div>
 <br><br>
 <div>
@@ -358,4 +361,6 @@
     <br>이러한 경험을 바탕으로 트러블슈팅 문서를 작성하며, 단순히 기능을 개발하는 데 그치지 않고 발생하는
     <br><strong>오류를 해결하고 효율성을 높이기 위해 지속적으로 노력</strong>했습니다. 
     <br><em>이 노력은 앞으로 이후에 발생한 상황을 예방할 수 있는 경험이 될거라고 생각합니다.</em></p>
+      <br>
+    <h5><a href="#목차">🔎 목차로 이동 </a> </h5>
 </div>
