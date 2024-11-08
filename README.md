@@ -11,6 +11,7 @@
     <ul>
       <li><em><strong>24.9.27 ~ 24.10.21</strong></em></li>
       <li><strong>Project-StoryBoard :</strong> <a href="https://www.notion.so/1141eacaea3880c884c9edfb16e9abf8?pvs=21">https://buly.kr/6Xl5EDn</a></li>
+     <li><strong>Portfolio-Doc :</strong> <a href="https://ahnjonyun.notion.site/AMUNA-1381eacaea3880ed89fcff2c1102f518">노션문서 (깃허브 리드미 보다 해당 문서를 더 권장합니다)</a></li>
     </ul>
 </div>
 <br>
