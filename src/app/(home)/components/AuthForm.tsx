@@ -93,7 +93,7 @@ const AuthForm = () => {
           code,
         });
 
-        const callback = await signIn('credentials', { email, password, redirect: false });
+        const callback = await signIn('credentials', { email, password, redirect: true });
         if (callback?.error) {
           toast.error('Invalid credentials!');
         }
@@ -219,6 +219,10 @@ const AuthForm = () => {
     const seconds = time % 60;
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
+
+  if (session.status === 'loading') {
+    return <LoadingModal show={true} />;
+  }
 
   return (
     <div className=' mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
